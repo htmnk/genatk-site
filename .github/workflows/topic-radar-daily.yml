@@ -1,0 +1,24 @@
+name: Daily topic radar
+
+on:
+  schedule:
+    - cron: '29 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    env:
+      TOPIC_RADAR_MODE: live
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npm run seo:topic-radar

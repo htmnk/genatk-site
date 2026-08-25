@@ -13,6 +13,20 @@ Replace the guarded mock branch in `tools/seo/gsc-sync.mjs` with the API client
 only after a successful read-only manual test. Query finalized data by page and
 query; do not infer daily strategy from preliminary data.
 
+## Topic radar
+
+`npm run seo:topic-radar` has a safe fixture mode locally. The scheduled GitHub
+Actions job sets `TOPIC_RADAR_MODE=live` and reads only the public Game
+Development Stack Exchange API. It writes a ranked report to
+the job workspace and log; it cannot modify the site, content ledger, briefs,
+or drafts. GitHub-hosted schedules are best-effort rather than a precise 24/7
+daemon, so this is a daily collector, not an autonomous publishing agent.
+
+The collector creates candidate packets from cited developer questions. It does
+not provide keyword volume, commercial difficulty, or permission to publish.
+Those decisions require Search Console data, a research brief, original
+evidence, and human approval.
+
 ## Analytics
 
 Create a GA4 property only once a real domain exists. Record `waitlist_submit`,

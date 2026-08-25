@@ -1,0 +1,38 @@
+{
+  "mode": "fixture_by_default",
+  "maximumCandidates": 3,
+  "cadence": "daily",
+  "purpose": "Collect cited developer-problem signals for human topic selection; never create, edit, draft, or publish content.",
+  "watchlist": [
+    {
+      "id": "seeded-reproducibility",
+      "topic": "seeded procedural generation and reproducibility",
+      "terms": ["procedural", "seed", "deterministic", "reproducible"],
+      "requiredAny": ["seed", "deterministic", "reproducible"],
+      "minimumMatches": 2
+    },
+    {
+      "id": "asset-pipeline-review",
+      "topic": "procedural game asset review and pipeline validation",
+      "terms": ["procedural", "asset", "pipeline", "validation"],
+      "requiredAll": ["procedural"],
+      "requiredAny": ["asset", "pipeline", "validation"],
+      "minimumMatches": 2
+    },
+    {
+      "id": "offline-workflows",
+      "topic": "offline procedural asset workflows",
+      "terms": ["offline", "local", "procedural", "generation"],
+      "requiredAny": ["offline", "local"],
+      "minimumMatches": 2
+    }
+  ],
+  "sources": ["stackexchange-gamedev"],
+  "guardrails": [
+    "Keep a source URL and capture date for every signal.",
+    "Treat discussion volume as a hypothesis, not keyword volume or demand proof.",
+    "Never scrape search-result pages, Reddit, or gated sites.",
+    "Never write to the content ledger, briefs, drafts, or site from this job.",
+    "A human chooses whether any ranked packet becomes a research brief."
+  ]
+}

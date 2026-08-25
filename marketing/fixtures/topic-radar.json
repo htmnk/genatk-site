@@ -1,0 +1,14 @@
+{
+  "capturedAt": "2026-08-25T00:00:00.000Z",
+  "source": "fixture",
+  "signals": [
+    {
+      "source": "example",
+      "title": "How should a team record a reviewed procedural seed variation?",
+      "url": "https://example.invalid/topic-radar-fixture",
+      "excerpt": "Fixture only: this is not a real demand signal.",
+      "publishedAt": "2026-08-25T00:00:00.000Z",
+      "engagement": 0
+    }
+  ]
+}
