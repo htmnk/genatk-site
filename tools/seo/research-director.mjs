@@ -41,7 +41,7 @@ const packets = radarPolicy.watchlist.map((watch) => {
   const clicks = gscRows.reduce((sum, row) => sum + Number(row.clicks || 0), 0);
   const communityScore = communitySignals.reduce((sum, candidate) => sum + Number(candidate.score || 0), 0);
   const score = Math.min(impressions, 50) / 10 + Math.min(clicks, 20) / 5 + Math.min(communityScore, 15) + technicalSources.length;
-  const recommendation = gsc.source !== 'google-search-console'
+  const recommendation = gsc.source !== 'google-search-console' || !(gsc.rows || []).length
     ? 'HOLD_FOR_SEARCH_DATA'
     : score >= policy.minimumScoreForResearch && technicalSources.length > 0
       ? 'RESEARCH_BRIEF_REVIEW_REQUIRED'
