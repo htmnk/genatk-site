@@ -21,6 +21,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm audit --audit-level=high
       - run: npm run seo:gsc-sync
       - run: npm run seo:analytics-sync
       - run: npm run seo:measure
