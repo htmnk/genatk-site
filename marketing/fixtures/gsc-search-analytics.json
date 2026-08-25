@@ -1,0 +1,9 @@
+{
+  "source": "fixture",
+  "dataState": "final",
+  "rows": [
+    { "keys": ["deterministic procedural assets", "https://example.invalid/learn/deterministic-procedural-assets/"], "clicks": 12, "impressions": 180, "ctr": 0.0667, "position": 14.8 },
+    { "keys": ["game ready generated 3d", "https://example.invalid/guides/game-ready-generated-3d-checklist/"], "clicks": 22, "impressions": 340, "ctr": 0.0647, "position": 11.3 }
+  ]
+}
+

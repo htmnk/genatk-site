@@ -1,0 +1,21 @@
+[
+  {
+    "id": "deterministic-generation",
+    "claim": "Deterministic generation makes the same input reproduce the same asset output.",
+    "status": "approved",
+    "specificity": "general"
+  },
+  {
+    "id": "game-ready-evaluation",
+    "claim": "A game-ready asset needs evaluation beyond visual appearance, including export and budget considerations.",
+    "status": "approved",
+    "specificity": "general"
+  },
+  {
+    "id": "cottage-seed-study-2026-08-25",
+    "claim": "A controlled 12-seed capture of one stylized cottage archetype produced 12 distinct preview files with no capture-run console errors; a separate deterministic regression command completed successfully.",
+    "status": "approved",
+    "specificity": "original-study",
+    "methodology": "See marketing/research/cottage-seed-study-2026-08-25.md. This is a visual variation study, not a benchmark of mesh quality, runtime cost, or commercial readiness."
+  }
+]

@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+const includeDrafts = import.meta.env.INCLUDE_DRAFTS === 'true';
+const entries = (await getCollection('learn', ({ data }) => data.status === 'published' || includeDrafts))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<Base title="Learn | GenATK" description="Notes on procedural game-asset generation.">
+  <article>
+    <p class="eyebrow">Learn</p>
+    <h1>Technical notes</h1>
+    {includeDrafts && <p class="eyebrow">Local draft preview enabled</p>}
+    {entries.length === 0 ? <p>First articles are in editorial review.</p> : <ul>{entries.map((entry) => <li><a href={`/learn/${entry.id}/`}>{entry.data.title}</a>{entry.data.status === 'draft' && ' (draft)'}<br />{entry.data.description}</li>)}</ul>}
+  </article>
+</Base>

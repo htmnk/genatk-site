@@ -1,0 +1,9 @@
+{
+  "source": "fixture",
+  "events": [
+    { "name": "waitlist_submit", "count": 2 },
+    { "name": "demo_request", "count": 1 },
+    { "name": "studio_launch", "count": 0 }
+  ]
+}
+

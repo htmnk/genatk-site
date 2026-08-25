@@ -1,0 +1,12 @@
+{
+  "slug": "deterministic-procedural-assets",
+  "approved": false,
+  "reviewedBy": "Replace with reviewer name",
+  "reviewedAt": "2026-08-24",
+  "author": "Replace with byline",
+  "authorUrl": "/about/",
+  "howCreated": "Prepared with automation from approved public evidence and technically reviewed by the named author.",
+  "title": "Why deterministic procedural assets matter in game pipelines",
+  "description": "A practical introduction to reproducible procedural variation and why it makes game assets easier to test, revise, and ship."
+}
+

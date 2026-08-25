@@ -1,0 +1,17 @@
+{
+  "forbiddenTerms": [
+    "forge-core",
+    "packages/core",
+    "shape grammar",
+    "seed stream",
+    "internal roadmap",
+    "unreleased pack"
+  ],
+  "forbiddenPatterns": [
+    "\\b(?:src|packages|apps|tools)/[A-Za-z0-9_./-]+",
+    "\\b(?:TODO|FIXME):"
+  ],
+  "requiredEvidence": true,
+  "requiredPublishedFields": ["author", "authorUrl", "howCreated", "reviewedAt"],
+  "note": "Every publishable article must be anchored in an approved original artifact or a clearly identified primary public source. Generic explainers may exist only as drafts and cannot advance to publication. This is a release policy, not a claim that all implementation information is secret forever. Any exception requires a human edit to this policy and a reviewed PR."
+}

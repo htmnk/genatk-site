@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!/.env.example
+marketing/reports/*.json
+!marketing/reports/.gitkeep
+marketing/drafts/

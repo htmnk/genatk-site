@@ -1,0 +1,27 @@
+name: Daily SEO health
+
+on:
+  schedule:
+    - cron: '17 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    if: vars.SITE_URL != ''
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run seo:gsc-sync
+      - run: npm run seo:analytics-sync
+      - run: npm run seo:measure
+      - run: npm run seo:health

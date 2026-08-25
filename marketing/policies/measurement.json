@@ -1,0 +1,19 @@
+{
+  "experiment": "organic-content-v1",
+  "decisionDayAfterLaunch": 90,
+  "minimumPublishedPages": 6,
+  "continueIf": {
+    "minimumPositiveSignals": 2,
+    "signals": [
+      "at_least_3_qualified_conversions",
+      "organic_clicks_growing_over_two_28_day_windows",
+      "target_intent_queries_reached",
+      "at_least_80_percent_of_published_pages_indexed"
+    ]
+  },
+  "iterateIf": "There is qualified query-impression growth but fewer than two positive signals.",
+  "pauseIf": "The test has reached day 90 and six published pages without query-intent fit, indexed coverage, or qualified conversion evidence.",
+  "qualifiedConversionEvents": ["waitlist_submit", "demo_request", "studio_launch"],
+  "note": "Thresholds are decision aids, not ranking claims. Change them only in a reviewed commit before reading the decision report."
+}
+

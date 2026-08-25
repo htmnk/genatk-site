@@ -1,0 +1,15 @@
+[
+  {
+    "topic": "deterministic procedural assets",
+    "reader": "solo-game-developer",
+    "hypothesis": "Developers need reproducible variation, not simply more random output.",
+    "evidenceRequired": "deterministic-generation"
+  },
+  {
+    "topic": "game-ready generated 3D asset checklist",
+    "reader": "technical-artist",
+    "hypothesis": "Teams need a way to evaluate exports beyond visual appearance.",
+    "evidenceRequired": "game-ready-evaluation"
+  }
+]
+

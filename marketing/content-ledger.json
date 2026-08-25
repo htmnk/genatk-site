@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "deterministic-procedural-assets",
+    "collection": "learn",
+    "intent": "learn",
+    "primaryIntent": "Evaluate how seeded procedural variation can be reviewed before production use",
+    "targetQuery": "procedural asset variation for games",
+    "audience": "solo-game-developer",
+    "decision": "create",
+    "uniqueEvidence": ["cottage-seed-study-2026-08-25"],
+    "disclosureRisk": "safe",
+    "status": "ready-for-editorial-review"
+  },
+  {
+    "slug": "game-ready-generated-3d-checklist",
+    "collection": "guides",
+    "intent": "evaluate",
+    "primaryIntent": "Evaluate whether a generated 3D asset is ready for a game pipeline",
+    "targetQuery": "game ready generated 3d assets",
+    "audience": "technical-artist",
+    "decision": "create",
+    "uniqueEvidence": ["game-ready-evaluation"],
+    "disclosureRisk": "safe",
+    "status": "brief"
+  }
+]

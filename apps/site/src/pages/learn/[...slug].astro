@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+export async function getStaticPaths() {
+  const includeDrafts = import.meta.env.INCLUDE_DRAFTS === 'true';
+  return (await getCollection('learn', ({ data }) => data.status === 'published' || includeDrafts)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const canonical = `/learn/${entry.id}/`;
+const articleSchema = Astro.site && {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.publishedAt.toISOString(),
+  dateModified: entry.data.reviewedAt.toISOString(),
+  author: { '@type': 'Organization', name: entry.data.author, url: new URL(entry.data.authorUrl, Astro.site).href },
+  publisher: { '@type': 'Organization', name: 'GenATK', url: Astro.site.href },
+  mainEntityOfPage: new URL(canonical, Astro.site).href,
+};
+---
+<Base title={`${entry.data.title} | GenATK`} description={entry.data.description} canonical={canonical}>
+  <article>
+    <p class="eyebrow">{entry.data.audience.replaceAll('-', ' ')}</p>
+    {entry.data.status === 'draft' && <p class="eyebrow">Local draft preview — not public</p>}
+    <h1>{entry.data.title}</h1>
+    <p class="lede">{entry.data.description}</p>
+    <p>By <a href={entry.data.authorUrl}>{entry.data.author}</a> · Reviewed <time datetime={entry.data.reviewedAt.toISOString()}>{entry.data.reviewedAt.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}</time></p>
+    <Content />
+    <h2>How this was made</h2>
+    <p>{entry.data.howCreated}</p>
+  </article>
+  {articleSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
+</Base>
