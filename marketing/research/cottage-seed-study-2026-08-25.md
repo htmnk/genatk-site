@@ -1,9 +1,9 @@
 # Research brief: 12-seed procedural asset review study
 
 **Decision date:** 2026-08-25  
-**Decision:** Create one evidence-led field note for editorial review.  
+**Decision:** Hold the field note until its reusable public artifact is complete.
 **Working title:** “What 12 seeded asset variations reveal about procedural review”  
-**Status:** Ready for editorial review; not published.
+**Status:** Research complete; evidence artifact pending; not published.
 
 ## Decision summary
 
@@ -20,10 +20,11 @@ to have keyword-volume data: no paid keyword database was used and a new domain
 has no Search Console history. Zero recorded volume is therefore *unknown*, not
 zero demand.
 
-The angle is defensible because it begins with a public-safe original artifact:
-a controlled 12-seed image study. It answers a practical question that product
-pages commonly skip: how should a developer review variation before claiming an
-asset belongs in a production pipeline?
+The angle is potentially defensible because it begins with a public-safe
+original artifact: a controlled 12-seed image study. Images alone are not a
+useful enough artifact. Before an article can be drafted, the study must be
+paired with a tool-agnostic reproducibility worksheet that teaches a developer
+how to record, reproduce, and review one chosen variation.
 
 ## Search and intent snapshot
 
@@ -38,16 +39,16 @@ Sources captured 2026-08-25: [Alpha3D](https://www.alpha3d.io/ai-3d-for-game-dev
 ## Original evidence record
 
 **Run:** 2026-08-25, one stylized cottage archetype, seeds 00–11.  
-**Capture command:** `node tools/shoot.mjs --out /private/tmp/forge-article-seeds --asset cottage --seeds 12`  
-**Capture result:** 12 images, 1 build per image, frame 60, 1,800 × 1,800 buffer, 0 console errors.  
+**Capture method:** a controlled local capture of one stylized cottage archetype.
+**Capture result:** 12 images, one build per image, no capture-run console errors.
 **Published derivative:** 12 JPEG previews at 600 × 600 px.  
 **Integrity check:** 12 distinct SHA-256 values across 12 published preview files.  
-**Repeatability check:** `npm run repro` completed successfully in the Forge workspace.
+**Repeatability check:** a separate deterministic regression check completed successfully.
 
 The record is intentionally narrow. Unique image hashes establish that published
 files differ at the byte level; they do not quantify meaningful visual distance.
-A successful deterministic regression command establishes only that the
-repository’s registered checks passed in this environment. It is not an
+A successful deterministic regression check establishes only that the
+project's registered checks passed in this environment. It is not an
 independent performance, topology, or export certification.
 
 ## Claim boundaries
@@ -55,9 +56,9 @@ independent performance, topology, or export certification.
 Allowed claims:
 
 - This original run generated and captured twelve labeled visual candidates.
-- The capture command recorded no console errors.
+- The capture process recorded no console errors.
 - The public preview files differ from one another at the byte level.
-- A separate deterministic regression command succeeded.
+- A separate deterministic regression check succeeded.
 
 Prohibited claims without a new artifact:
 
@@ -65,9 +66,33 @@ Prohibited claims without a new artifact:
 - Export compatibility, triangle counts, UV status, collision, draw calls, or runtime performance.
 - Market leadership, customer outcomes, or model comparisons.
 
-## Why this earns a publishable slot
+## Evidence required before this earns a publishable slot
 
-Google’s [people-first content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) recommends material created to help people rather than principally to manipulate rankings. This note has a specific audience, a review method a reader can reuse, visible original evidence, and explicit limitations. It should be published only after a human verifies that the visuals and wording still accurately represent the project.
+The article remains blocked until all of the following public-safe material is
+available and reviewed:
+
+1. A downloadable or copyable seed-review worksheet with fields for asset ID,
+   generator version, seed/state, chosen settings, export format, reviewer, and
+   review outcome.
+2. A small image gallery that labels the twelve variations without exposing
+   implementation, source code, unreleased product behaviour, or roadmap.
+3. A plain-language methodology and limitations note which distinguishes
+   repeatability from compatibility, visual quality, and production readiness.
+4. A technical review confirming the worksheet can reproduce a selected output
+   in the public demonstration environment, or an explicit statement that the
+   worksheet is illustrative rather than executable.
+
+Engine documentation supports the narrow premise: Godot documents that a fixed
+seed yields the same pseudo-random sequence, while Unreal documents that a
+Random Stream produces the same values from the same initial seed. Those facts
+do not prove cross-version, cross-platform, or export-level compatibility, so
+the article must not infer them.
+
+Sources: [Godot random number generation](https://docs.godotengine.org/en/stable/tutorials/math/random_number_generation.html) and [Unreal Random Streams](https://dev.epicgames.com/documentation/unreal-engine/random-streams-in-unreal-engine?lang=en-US).
+
+## Why this could earn a publishable slot
+
+Google’s [people-first content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) recommends material created to help people rather than principally to manipulate rankings. This note can have a specific audience, a review method a reader can reuse, visible original evidence, and explicit limitations. It should be published only after a human verifies that the worksheet, visuals, and wording accurately represent the project.
 
 ## Measurement plan after launch
 
