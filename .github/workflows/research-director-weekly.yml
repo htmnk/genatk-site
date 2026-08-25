@@ -1,24 +1,24 @@
-name: Daily SEO health
+name: Weekly research director
 
 on:
   schedule:
-    - cron: '17 7 * * *'
+    - cron: '13 7 * * 1'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  health:
-    if: vars.SITE_URL != ''
+  recommend:
     runs-on: ubuntu-latest
     env:
-      SITE_URL: ${{ vars.SITE_URL }}
       GSC_MODE: auto
       GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
       GSC_CLIENT_ID: ${{ secrets.GSC_CLIENT_ID }}
       GSC_CLIENT_SECRET: ${{ secrets.GSC_CLIENT_SECRET }}
       GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
+      TOPIC_RADAR_MODE: live
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -28,6 +28,7 @@ jobs:
       - run: npm ci
       - run: npm audit --audit-level=high
       - run: npm run seo:gsc-sync
-      - run: npm run seo:analytics-sync
-      - run: npm run seo:measure
-      - run: npm run seo:health
+      - run: npm run seo:topic-radar
+      - run: npm run seo:research-director
+      - if: ${{ env.OPENAI_API_KEY != '' }}
+        run: npm run seo:research-synthesis -- --live

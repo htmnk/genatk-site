@@ -6,11 +6,17 @@ tested before launch.
 
 ## Search Console
 
-When a domain exists, verify its Search Console property and create an OAuth
-credential restricted to `https://www.googleapis.com/auth/webmasters.readonly`.
-Store the refresh-token material as GitHub Actions secrets; never commit it.
-Replace the guarded mock branch in `tools/seo/gsc-sync.mjs` with the API client
-only after a successful read-only manual test. Query finalized data by page and
+The site already has a verified Domain property. To enable the live, read-only
+sync, create a Google OAuth client and grant only
+`https://www.googleapis.com/auth/webmasters.readonly`. Store these GitHub
+Actions secrets (never repository files): `GSC_CLIENT_ID`,
+`GSC_CLIENT_SECRET`, and `GSC_REFRESH_TOKEN`. Add a repository variable
+`GSC_PROPERTY` with the exact Domain-property value `sc-domain:genatk.com`.
+
+`tools/seo/gsc-sync.mjs` uses `GSC_MODE=auto` in scheduled jobs. Until all three
+secrets exist it writes an explicit `unconfigured` report with zero rows; it
+does not substitute fake fixture data. Once authorized, it reads finalized web
+query/page data for the previous 28 days. Query finalized data by page and
 query; do not infer daily strategy from preliminary data.
 
 ## Topic radar
@@ -26,6 +32,19 @@ The collector creates candidate packets from cited developer questions. It does
 not provide keyword volume, commercial difficulty, or permission to publish.
 Those decisions require Search Console data, a research brief, original
 evidence, and human approval.
+
+## Research director
+
+The weekly director runs the GSC sync, topic radar, and
+`npm run seo:research-director`. It produces only private scored packets with
+the underlying source rows and primary-source register entries. It does not
+call an AI model or create content. If the optional `OPENAI_API_KEY` Actions
+secret is set, the next step runs `seo:research-synthesis -- --live`; that
+analyst sees only the director report and technical-source register, writes an
+untrusted private Markdown memo, and has no write path to the site, drafts, or
+content ledger. A scheduled GitHub job is a best-effort
+batch process, not an always-running agent; each run starts cleanly and exits
+after producing its recommendation log.
 
 ## Analytics
 

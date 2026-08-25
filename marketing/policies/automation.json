@@ -1,9 +1,9 @@
 {
   "draftModel": "gpt-5.4-mini",
+  "researchModel": "gpt-5.4-mini",
   "draftsPerWeek": 1,
   "publishMode": "human_merge_only",
   "allowedContextRoots": ["marketing/public-evidence", "marketing/briefs", "marketing/content-ledger.json", "marketing/policies"],
   "researchMode": "mock_until_external_sources_are_configured",
   "note": "The model is never permitted to browse or read product source code. A generated draft is an untrusted artifact until it clears checks and a human approves it."
 }
-

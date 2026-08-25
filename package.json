@@ -21,6 +21,8 @@
     "content:promote": "node tools/seo/promote-draft.mjs",
     "seo:research": "node tools/seo/research.mjs",
     "seo:topic-radar": "node tools/seo/topic-radar.mjs",
+    "seo:research-director": "node tools/seo/research-director.mjs",
+    "seo:research-synthesis": "node tools/seo/research-synthesis.mjs",
     "seo:gsc-sync": "node tools/seo/gsc-sync.mjs",
     "seo:analytics-sync": "node tools/seo/analytics-sync.mjs",
     "seo:static-audit": "node tools/seo/static-audit.mjs",

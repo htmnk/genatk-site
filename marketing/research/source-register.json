@@ -1,0 +1,18 @@
+[
+  {
+    "id": "godot-random-number-generation",
+    "watchIds": ["seeded-reproducibility"],
+    "publisher": "Godot Engine",
+    "title": "Random number generation",
+    "url": "https://docs.godotengine.org/en/stable/tutorials/math/random_number_generation.html",
+    "use": "Primary documentation for fixed seeds and generator state; not proof of export or cross-version compatibility."
+  },
+  {
+    "id": "unreal-random-streams",
+    "watchIds": ["seeded-reproducibility", "asset-pipeline-review"],
+    "publisher": "Epic Games",
+    "title": "Random Streams",
+    "url": "https://dev.epicgames.com/documentation/unreal-engine/random-streams-in-unreal-engine?lang=en-US",
+    "use": "Primary documentation for repeatable stream output; not a GenATK product claim."
+  }
+]
