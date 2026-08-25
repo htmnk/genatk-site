@@ -24,6 +24,7 @@
     "seo:research-director": "node tools/seo/research-director.mjs",
     "seo:research-synthesis": "node tools/seo/research-synthesis.mjs",
     "seo:gsc-sync": "node tools/seo/gsc-sync.mjs",
+    "seo:gsc-authorize": "node tools/seo/gsc-authorize.mjs",
     "seo:analytics-sync": "node tools/seo/analytics-sync.mjs",
     "seo:static-audit": "node tools/seo/static-audit.mjs",
     "seo:lighthouse": "node tools/seo/lighthouse-audit.mjs",

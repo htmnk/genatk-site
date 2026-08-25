@@ -4,6 +4,7 @@ dist/
 .env
 .env.*
 !/.env.example
+.gsc-refresh-token
 marketing/reports/*.json
 marketing/reports/*.md
 !marketing/reports/.gitkeep

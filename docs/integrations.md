@@ -13,6 +13,12 @@ Actions secrets (never repository files): `GSC_CLIENT_ID`,
 `GSC_CLIENT_SECRET`, and `GSC_REFRESH_TOKEN`. Add a repository variable
 `GSC_PROPERTY` with the exact Domain-property value `sc-domain:genatk.com`.
 
+To generate the refresh token, create a **Desktop app** OAuth client, set its
+ID and secret only in your local shell, then run `npm run seo:gsc-authorize`.
+It opens a Google consent URL on a loopback callback and writes the resulting
+refresh token to the ignored local `.gsc-refresh-token` file. Do not paste that
+token into chat or commit it; copy it directly into the GitHub Actions secret.
+
 `tools/seo/gsc-sync.mjs` uses `GSC_MODE=auto` in scheduled jobs. Until all three
 secrets exist it writes an explicit `unconfigured` report with zero rows; it
 does not substitute fake fixture data. Once authorized, it reads finalized web
