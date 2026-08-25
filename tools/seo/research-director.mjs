@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { repoRoot, readJson, queryTokens } from './shared.mjs';
 
@@ -70,5 +70,21 @@ const report = {
 };
 await mkdir(reportRoot, { recursive: true });
 await writeFile(resolve(reportRoot, 'research-director-latest.json'), `${JSON.stringify(report, null, 2)}\n`);
+if (process.env.GITHUB_STEP_SUMMARY) {
+  const summary = [
+    '## GenATK research director',
+    '',
+    `- Search Console: **${gsc.source}**`,
+    `- Topic radar: **${radar.source}**`,
+    '',
+    '| Topic | Decision | Score | GSC impressions | Community signals |',
+    '| --- | --- | ---: | ---: | ---: |',
+    ...packets.map((packet) => `| ${packet.topic} | ${packet.recommendation} | ${packet.score} | ${packet.gsc.impressions} | ${packet.community.signals.length} |`),
+    '',
+    'These are private research recommendations, not content decisions or publication instructions.',
+    '',
+  ].join('\n');
+  await appendFile(process.env.GITHUB_STEP_SUMMARY, summary);
+}
 console.log(`Research director: ${packets.length} packet(s); GSC=${gsc.source}; radar=${radar.source}.`);
 for (const packet of packets) console.log(`${packet.recommendation}: ${packet.topic} (${packet.score})`);
