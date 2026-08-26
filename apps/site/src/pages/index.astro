@@ -2,6 +2,31 @@
 import Base from '../layouts/Base.astro';
 import HeroAsset from '../components/HeroAsset.astro';
 import Waitlist from '../components/Waitlist.astro';
+import { createHighlighter } from 'shiki';
+
+const engines = [
+  ['Unity', 'C# package', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/unity.svg'],
+  ['Godot', 'GDExtension', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/godotengine.svg'],
+  ['Unreal', 'C++ plugin', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/unrealengine.svg'],
+  ['three.js', 'npm module', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/threedotjs.svg'],
+  ['iOS', 'Swift · Metal', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/apple.svg'],
+  ['Android', 'Kotlin · Vulkan', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/android.svg'],
+  ['WebGPU', 'wasm core', 'https://cdn.jsdelivr.net/npm/simple-icons@13/icons/webgpu.svg'],
+  ['Bevy', 'Rust crate', 'https://cdn.jsdelivr.net/npm/simple-icons@11/icons/bevy.svg'],
+] as const;
+
+const code = `// an entire village, from one line each
+import { building, tree, prop } from "genatk";
+
+const tavern = building({
+  seed: 1042, style: "rustic", floors: 2
+});
+const oaks = tree.scatter({ seed: 7, count: 120 });
+const lamps = prop({ kind: "streetlamp", era: "village" });
+
+scene.add(tavern, oaks, lamps);`;
+const highlighter = await createHighlighter({ langs: ['typescript'], themes: ['github-dark'] });
+const codeLines = highlighter.codeToTokensBase(code, { lang: 'typescript', theme: 'github-dark' });
 ---
 
 <Base title="GenATK — Generative Asset Toolkit" description="A local-first generative asset toolkit: deterministic runtime variation, public experiments, and small, inspectable rules.">
@@ -19,30 +44,36 @@ import Waitlist from '../components/Waitlist.astro';
   <div class="marquee" id="assets" aria-label="Asset categories"><div><span>BUILDINGS ✦ VEGETATION ✦ DECORATIONS ✦ PROPS ✦ TERRAIN ✦ FURNITURE ✦ ROADS ✦ ROCKS ✦&nbsp;</span><span>BUILDINGS ✦ VEGETATION ✦ DECORATIONS ✦ PROPS ✦ TERRAIN ✦ FURNITURE ✦ ROADS ✦ ROCKS ✦&nbsp;</span></div></div>
 
   <section class="section runtime" id="engines">
-    <div class="section-heading"><p class="kicker mint">RUNS WHERE YOU BUILD</p><h2>Built for the stack you already have.</h2><p>One compact, deterministic core. The toolkit is being designed to sit comfortably beside engines, renderers, and toolchains rather than replacing them.</p></div>
-    <div class="engine-grid"><article><b>Unity</b><span>C# package</span></article><article><b>Godot</b><span>GDExtension</span></article><article><b>three.js</b><span>npm module</span></article><article><b>Bevy</b><span>Rust crate</span></article><article><b>WebGPU</b><span>wasm core</span></article><article><b>Native</b><span>FFI-ready core</span></article></div>
+    <div class="section-heading"><p class="kicker mint">RUNS WHERE YOU BUILD</p><h2>Drops into any framework.</h2><p>One small library, no runtime dependencies. Because assets are generated from code, GenATK ports cleanly to every engine and graphics API.</p></div>
+    <div class="engine-grid">{engines.map(([name, platform, icon]) => <article><img src={icon} width="30" height="30" alt="" loading="lazy" /><b>{name}</b><span>{platform}</span></article>)}</div>
   </section>
 
   <section class="how" id="how-it-works">
-    <div class="how-inner"><div><p class="kicker yellow">BUILT FOR REAL WORKFLOWS</p><h2>No model files.<br /><em>Just rules.</em></h2><p>Generated assets should be easy to share, revise, and reason about. A seed is an address; parameters are the brief. That makes variation repeatable for people and legible to tools.</p><ul><li>Deterministic seeds — return to the exact reviewed variation.</li><li>Text-native settings — keep useful asset intent with your project.</li><li>Small by default — move parameters instead of binary libraries.</li></ul></div><div class="code-window" data-typing-code><div class="code-bar"><i></i><i></i><i></i><span>scene.ts</span></div><pre aria-label="Example GenATK code"><code></code></pre></div></div>
+    <div class="how-inner"><div><p class="kicker yellow">BUILT FOR REAL WORKFLOWS</p><h2>No model files.<br /><em>Just rules.</em></h2><p>Generated assets should be easy to share, revise, and reason about. A seed is an address; parameters are the brief. That makes variation repeatable for people and legible to tools.</p><ul><li>Deterministic seeds — return to the exact reviewed variation.</li><li>Text-native settings — keep useful asset intent with your project.</li><li>Small by default — move parameters instead of binary libraries.</li></ul></div><div class="code-window" data-typing-code><div class="code-bar"><i></i><i></i><i></i><span>scene.ts</span></div><pre aria-label="Example GenATK TypeScript code"><code>{codeLines.map((line, index) => <span class="code-line" data-length={line.map((token) => token.content).join('').length}>{line.map((token) => <span style={`color:${token.color}`}>{token.content}</span>)}{index < codeLines.length - 1 && '\n'}</span>)}</code></pre></div></div>
   </section>
 
   <section class="section experiments" id="labs"><div class="section-heading"><p class="kicker">PUBLIC EXPERIMENTS</p><h2>See the rules before the release.</h2><p>We publish small studies while the underlying toolkit is still taking shape. They are useful on their own—and show the kind of system GenATK is becoming.</p><a class="inline-link" href="/labs/">Explore the labs <span>→</span></a></div><a class="study-card" href="/labs/seeded-assets/" aria-label="Open the Wayfinder lab"><div class="study-grid"></div><div class="study-object"><i></i><b></b><span></span></div><div class="study-meta"><span>WAYFINDER / 01</span><span>LIVE STUDY</span></div><div class="study-readout"><span>SEED</span><b>004287</b><span>FORM</span><b>SHRINE</b></div></a></section>
 
-  <section class="updates" id="updates"><div><p class="kicker">UNDER CONSTRUCTION — FOLLOW ALONG</p><h2>Be first when the toolkit is ready.</h2><p>Occasional build notes, new public experiments, and early access invitations. No launch-date theater, no spam.</p></div><Waitlist source="homepage" variant="compact" /></section>
+  <section class="updates" id="updates"><div><p class="kicker">UNDER CONSTRUCTION — FOLLOW ALONG</p><h2>Be first when the toolkit ships.</h2><p>Progress notes, new generators, and early access invites. No spam — a couple of emails a month.</p></div><Waitlist source="homepage" variant="compact" /></section>
 </Base>
 
 <script>
-  const code = `// a scene is a few named rules\nimport { building, tree, prop } from "genatk";\n\nconst tavern = building({\n  seed: 1042, style: "rustic", floors: 2\n});\nconst oaks = tree.scatter({ seed: 7, count: 120 });\nconst lamps = prop({ kind: "streetlamp", era: "village" });\n\nscene.add(tavern, oaks, lamps);`;
   document.querySelectorAll<HTMLElement>('[data-typing-code]').forEach((panel) => {
-    const target = panel.querySelector('code')!;
+    const lines = Array.from(panel.querySelectorAll<HTMLElement>('.code-line'));
     let started = false;
     const type = () => {
       if (started) return; started = true;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { target.textContent = code; return; }
-      let index = 0;
-      const write = () => { target.textContent = code.slice(0, index++); if (index <= code.length) window.setTimeout(write, code[index - 1] === '\n' ? 48 : 10); };
-      write();
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let delay = 0;
+      lines.forEach((line) => {
+        line.style.clipPath = 'inset(0 100% 0 0)';
+        const duration = Math.max(160, Number(line.dataset.length ?? 8) * 18);
+        window.setTimeout(() => {
+          line.style.transitionDuration = `${duration}ms`;
+          line.style.clipPath = 'inset(0 0 0 0)';
+        }, delay);
+        delay += duration + 54;
+      });
     };
     const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { type(); observer.disconnect(); } }, { threshold: .35 });
     observer.observe(panel);
@@ -51,4 +82,10 @@ import Waitlist from '../components/Waitlist.astro';
 
 <style>
   .hero,.section,.how-inner,.updates{width:min(100%,1280px);margin:auto;padding-inline:clamp(20px,5vw,64px)}.hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,56px);align-items:center;padding-block:clamp(40px,7vw,96px)}.hero-copy .kicker,.kicker{margin:0 0 18px;color:var(--orange-soft);font:700 .8rem/1.25 var(--mono);letter-spacing:.12em}.kicker.mint{color:var(--mint)}.kicker.yellow{color:var(--yellow)}.hero h1{max-width:12ch;margin:0 0 22px;font-size:clamp(3rem,6vw,4.5rem);font-weight:800;line-height:1.02;letter-spacing:-.03em}.hero h1 em,.how h2 em{color:var(--orange);font-style:normal}.hero-copy>p:not(.kicker){max-width:52ch;margin:0;color:var(--muted);font-size:clamp(1.06rem,2vw,1.24rem);line-height:1.55}.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}.pill{border-radius:999px;padding:14px 28px;font:800 1.1rem/1 var(--display);text-decoration:none}.primary{border:1px solid rgba(46,196,166,.55);background:linear-gradient(180deg,rgba(46,196,166,.4),rgba(46,196,166,.16));box-shadow:0 8px 24px rgba(46,196,166,.22),inset 0 1px 0 rgba(255,255,255,.28);color:var(--mint-light)}.primary:hover{color:var(--text);background:linear-gradient(180deg,rgba(46,196,166,.55),rgba(46,196,166,.25))}.secondary{border:1px solid rgba(251,244,232,.25);background:rgba(251,244,232,.07);color:var(--text)}.secondary:hover{color:var(--text);background:rgba(251,244,232,.14)}.hero dl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:38rem;margin:42px 0 0}.hero dl div{border-top:1px solid var(--line);padding-top:11px}.hero dt{font:700 .67rem/1.3 var(--mono);letter-spacing:.1em;color:var(--yellow)}.hero dd{margin:5px 0 0;color:#b5a791;font-size:.76rem;line-height:1.35}.marquee{overflow:hidden;border-top:1px solid rgba(46,196,166,.35);border-bottom:1px solid rgba(46,196,166,.35);background:#14342c;padding:14px 0}.marquee div{display:flex;gap:48px;width:max-content;color:#7fe8d2;font:700 .92rem/1.25 var(--mono);letter-spacing:.08em;animation:marquee 26s linear infinite}.section{padding-block:clamp(56px,8vw,110px)}.section-heading{max-width:640px}.section-heading h2,.how h2,.updates h2{margin:0 0 16px;font-size:clamp(2.2rem,4vw,3rem);font-weight:800;line-height:1.08;letter-spacing:-.02em}.section-heading>p:not(.kicker),.updates>div>p:not(.kicker){margin:0;color:var(--muted);font-size:1.1rem;line-height:1.55}.engine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,185px),1fr));gap:14px;margin-top:40px}.engine-grid article{display:flex;min-height:112px;flex-direction:column;justify-content:center;gap:6px;border:2px solid #3f362a;border-radius:16px;background:#2b231b;padding:18px;transition:transform .2s,background .2s,box-shadow .2s}.engine-grid article:hover{transform:translate(-2px,-2px);background:#322a20;box-shadow:4px 4px 0 #120e0a}.engine-grid b{font:800 1.24rem/1 var(--display)}.engine-grid span{color:#9c8e7d;font:500 .75rem var(--mono)}.how{border-top:2px solid var(--line);background:var(--ink-deep)}.how-inner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,5vw,72px);align-items:center;padding-block:clamp(56px,8vw,110px)}.how h2{font-size:clamp(2.3rem,4.2vw,3rem)}.how h2 em{color:var(--mint)}.how p:not(.kicker){margin:0;color:var(--muted);font-size:1.08rem}.how ul{display:grid;gap:12px;margin:26px 0 0;padding:0;list-style:none}.how li{display:flex;gap:12px;color:#efe4d2;font-size:1rem}.how li::before{content:'→';color:var(--yellow);font-weight:800}.code-window{overflow:hidden;border:2px solid #fbf4e8;border-radius:20px;background:#1c1712;box-shadow:8px 8px 0 var(--orange)}.code-bar{display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--line);padding:14px 18px}.code-bar i{width:12px;height:12px;border-radius:50%;background:var(--orange)}.code-bar i:nth-child(2){background:var(--yellow)}.code-bar i:nth-child(3){background:var(--mint)}.code-bar span{margin-left:8px;color:#8f8271;font:500 .72rem var(--mono)}.code-window pre{min-height:345px;margin:0;border:0;border-radius:0;background:#1c1712;padding:22px 24px;color:#efe4d2;font:500 clamp(.72rem,1.4vw,.9rem)/1.72 var(--mono);white-space:pre-wrap}.code-window code::after{content:'▋';color:var(--mint);animation:blink 1s steps(1) infinite}.experiments{display:grid;grid-template-columns:.86fr 1.14fr;gap:clamp(28px,8vw,7rem);align-items:center}.inline-link{display:inline-block;margin-top:20px;color:var(--text);font-weight:800;text-decoration:none}.inline-link span{color:var(--mint);margin-left:.3rem}.study-card{position:relative;display:block;min-height:31rem;overflow:hidden;border:2px solid #3f362a;border-radius:20px;background:radial-gradient(circle at 50% 42%,#314b43,#20251f 47%,#14100c);box-shadow:8px 8px 0 #120e0a;color:var(--text);text-decoration:none}.study-grid{position:absolute;inset:0;background-image:linear-gradient(#c5f7e310 1px,transparent 1px),linear-gradient(90deg,#c5f7e310 1px,transparent 1px);background-size:2rem 2rem}.study-meta{position:absolute;z-index:2;inset:1rem 1rem auto;display:flex;justify-content:space-between;color:#d6e6e299;font:700 .66rem var(--mono);letter-spacing:.12em}.study-object{position:absolute;top:48%;left:50%;width:30%;height:59%;transform:translate(-50%,-45%);filter:drop-shadow(0 0 2rem #d6ff8b44)}.study-object::before{position:absolute;inset:0;background:linear-gradient(111deg,#ffc53d 0 21%,#ff8c5a 21% 41%,#2ec4a6 41% 68%,#173b32 68%);clip-path:polygon(50% 0,100% 28%,83% 100%,18% 100%,0 28%);content:''}.study-object i{position:absolute;z-index:1;top:13%;left:50%;width:31%;aspect-ratio:1;transform:translateX(-50%) rotate(45deg);background:#f1ffc9;box-shadow:0 0 2rem #d8ff83}.study-object b{position:absolute;z-index:1;top:60%;left:17%;width:66%;height:1px;background:#ecffc2}.study-object span{position:absolute;z-index:1;right:19%;bottom:15%;width:.43rem;height:.43rem;border-radius:50%;background:#111a1b;box-shadow:0 0 0 .17rem #eaffba}.study-readout{position:absolute;right:1rem;bottom:1rem;display:grid;grid-template-columns:auto auto;gap:.15rem .65rem;color:#dce9e5aa;font:.65rem var(--mono);letter-spacing:.1em}.study-readout b{color:#e9f6f0;font-size:.7rem}.updates{padding-block:clamp(56px,8vw,110px)}.updates>div{margin:auto;text-align:center}.updates h2{margin-bottom:14px}.updates .waitlist{max-width:780px;margin:30px auto 0;display:block;border:1px solid rgba(46,196,166,.28);border-radius:28px;background:radial-gradient(ellipse at 50% -10%,rgba(46,196,166,.16),transparent 55%),#1f1913;box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);padding:22px}.updates .waitlist label,.updates .waitlist .fine-print{display:none}.updates .waitlist-row{justify-content:center}.updates .waitlist input{max-width:340px;padding:14px 18px;font-family:var(--mono)}.updates .waitlist button{padding:14px 30px;font-size:1.08rem}@keyframes marquee{to{transform:translateX(-50%)}}@keyframes blink{50%{opacity:0}}@media(max-width:54rem){.hero,.how-inner,.experiments{grid-template-columns:1fr}.hero{padding-top:56px}.experiments{gap:36px}.study-card{max-width:43rem;width:100%;margin:auto}}@media(max-width:40rem){.hero h1{font-size:3.5rem}.hero dl{grid-template-columns:1fr}.study-card{min-height:25rem}.code-window pre{min-height:290px;font-size:.68rem}}
+  /* Source-matched engine cards and a Shiki-highlighted TypeScript window. */
+  .engine-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr))}
+  .engine-grid article{min-height:126px;justify-content:flex-start;gap:8px}
+  .engine-grid img{width:30px;height:30px;margin-bottom:3px;object-fit:contain;filter:invert(.94) sepia(.08);opacity:.92}
+  .code-window code{display:block}
+  .code-line{display:block;white-space:pre;will-change:clip-path}
 </style>

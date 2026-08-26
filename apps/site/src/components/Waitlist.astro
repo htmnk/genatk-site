@@ -4,7 +4,7 @@ const source = Astro.props.source ?? 'site';
 const variant = Astro.props.variant ?? 'default';
 const formAction = username ? `https://buttondown.com/api/emails/embed-subscribe/${encodeURIComponent(username)}` : undefined;
 ---
-{formAction && <section id="early-access" class:list={['waitlist', variant === 'compact' && 'waitlist-compact']} aria-labelledby="waitlist-title">
+<section id="early-access" class:list={['waitlist', variant === 'compact' && 'waitlist-compact']} aria-labelledby={variant === 'compact' ? undefined : 'waitlist-title'} aria-label={variant === 'compact' ? 'Join the GenATK waitlist' : undefined}>
   {variant !== 'compact' && <>
   <div>
     <p class="eyebrow">Early access</p>
@@ -12,21 +12,31 @@ const formAction = username ? `https://buttondown.com/api/emails/embed-subscribe
     <p>Occasional notes on experiments, public labs, and the eventual toolkit. No launch-date promise and no spam.</p>
   </div>
   </>}
-  <form action={formAction} method="post" data-genatk-conversion="waitlist_submit">
+  <form action={formAction} method="post" data-genatk-conversion="waitlist_submit" data-waitlist-configured={formAction ? 'true' : 'false'}>
     <label for={`waitlist-email-${source}`}>Email address</label>
     <div class="waitlist-row">
-      <input id={`waitlist-email-${source}`} name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
+      <input id={`waitlist-email-${source}`} name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@studio.dev" required />
       <input type="hidden" name="embed" value="1" />
       <input type="hidden" name="tag" value={`genatk-${source}`} />
-      <button type="submit">Keep me posted</button>
+      <button type="submit">{variant === 'compact' ? 'Subscribe' : 'Keep me posted'}</button>
     </div>
     <p class="fine-print">By subscribing, you agree to receive GenATK updates. You can unsubscribe at any time. See <a href="/privacy/">privacy</a>.</p>
   </form>
-</section>}
+</section>
 
 <script>
   document.querySelectorAll<HTMLFormElement>('form[data-genatk-conversion]').forEach((form) => {
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (event) => {
+      if (form.dataset.waitlistConfigured !== 'true') {
+        event.preventDefault();
+        const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+        if (button) {
+          const original = button.textContent;
+          button.textContent = 'Live on genatk.com';
+          window.setTimeout(() => { button.textContent = original; }, 2400);
+        }
+        return;
+      }
       window.dispatchEvent(new CustomEvent('genatk:conversion', { detail: { event: form.dataset.genatkConversion } }));
     });
   });
