@@ -34,7 +34,7 @@ const codeLines = highlighter.codeToTokensBase(code, { lang: 'typescript', theme
   <section class="hero" id="top">
     <div class="hero-copy">
       <p class="kicker">GENERATIVE ASSET TOOLKIT</p>
-      <h1>Zero downloads.<br /><em>Infinite assets.</em></h1>
+      <h1>Infinite game assets.<br /><em>Zero downloads.</em></h1>
       <p>Build deterministic game assets locally from a seed and a few explicit parameters—no model files, asset marketplaces, or cloud dependency to manage.</p>
       <div class="hero-actions"><a class="pill primary" href="#updates">Join the waitlist</a><a class="pill secondary" href="#how-it-works">How it works</a></div>
       <dl><div><dt>SEEDED</dt><dd>same inputs, same result</dd></div><div><dt>LOCAL-FIRST</dt><dd>no asset cloud required</dd></div><div><dt>INSPECTABLE</dt><dd>parameters stay visible</dd></div></dl>
@@ -42,7 +42,7 @@ const codeLines = highlighter.codeToTokensBase(code, { lang: 'typescript', theme
     <HeroAsset />
   </section>
 
-  <div class="marquee" aria-label="Asset categories"><div><span>{assetKeywords} {assetKeywords} {assetKeywords}</span><span aria-hidden="true">{assetKeywords} {assetKeywords} {assetKeywords}</span></div></div>
+  <div class="marquee" aria-label="Asset categories"><div><span>{assetKeywords} {assetKeywords}</span><span aria-hidden="true">{assetKeywords} {assetKeywords}</span></div></div>
 
   <section class="section runtime" id="engines">
     <div class="section-heading"><p class="kicker mint">RUNS WHERE YOU BUILD</p><h2>Drops into any framework.</h2><p>One small library, no runtime dependencies. Because assets are generated from code, GenATK ports cleanly to every engine and graphics API.</p></div>
@@ -55,7 +55,7 @@ const codeLines = highlighter.codeToTokensBase(code, { lang: 'typescript', theme
 
   <section class="section experiments" id="labs"><div class="section-heading"><p class="kicker">PUBLIC EXPERIMENTS</p><h2>See the rules before the release.</h2><p>We publish small studies while the underlying toolkit is still taking shape. They are useful on their own—and show the kind of system GenATK is becoming.</p><a class="inline-link" href="/labs/">Explore the labs <span>→</span></a></div><a class="study-card" href="/labs/seeded-assets/" aria-label="Open the Wayfinder lab"><div class="study-grid"></div><div class="study-object"><i></i><b></b><span></span></div><div class="study-meta"><span>WAYFINDER / 01</span><span>LIVE STUDY</span></div><div class="study-readout"><span>SEED</span><b>004287</b><span>FORM</span><b>SHRINE</b></div></a></section>
 
-  <section class="updates" id="updates"><div><p class="kicker">UNDER CONSTRUCTION — FOLLOW ALONG</p><h2>Be first when the toolkit ships.</h2><p>Progress notes, new generators, and early access invites. No spam — a couple of emails a month.</p></div><Waitlist source="homepage" variant="compact" /></section>
+  <section class="updates" id="updates"><div class="updates-card"><div class="updates-copy"><p class="kicker">UNDER CONSTRUCTION — FOLLOW ALONG</p><h2>Be first when the toolkit ships.</h2><p>Progress notes, new generators, and early access invites. No spam — a couple of emails a month.</p></div><Waitlist source="homepage" variant="compact" /></div></section>
 </Base>
 
 <script>
@@ -89,7 +89,10 @@ const codeLines = highlighter.codeToTokensBase(code, { lang: 'typescript', theme
   .engine-grid img{width:30px;height:30px;margin-bottom:3px;object-fit:contain;filter:invert(.94) sepia(.08);opacity:.92}
   .code-window code{display:block}
   .code-line{display:block;white-space:pre;will-change:clip-path}
-  .marquee div{gap:40px;animation-duration:56s}.marquee span{flex:none;white-space:nowrap}
+  .marquee div{gap:40px;animation-duration:80s;transform:translate3d(0,0,0)}.marquee span{flex:none;white-space:nowrap}
   .code-window code,.code-window code span{border-radius:0;background:transparent;padding:0}
+  .engine-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.engine-grid article{width:100%}
+  .updates-card{max-width:1120px;margin:auto;padding:clamp(36px,5vw,64px);border:1px solid rgba(46,196,166,.32);border-radius:28px;background:radial-gradient(ellipse at 50% -12%,rgba(46,196,166,.18),transparent 54%),#1f1913;box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}.updates .updates-copy{margin:auto;text-align:center}.updates .waitlist{max-width:520px;margin:30px auto 0;border:0;border-radius:0;background:transparent;box-shadow:none;padding:0}.updates .waitlist-row{gap:12px}.updates .waitlist input{min-height:58px}.updates .waitlist button{min-height:58px}
   .primary{position:relative;isolation:isolate;overflow:hidden;transition:color .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease}.primary::before{position:absolute;z-index:-1;inset:-35% -15%;background:radial-gradient(ellipse at 50% 0,rgba(214,255,244,.72),rgba(46,196,166,.3) 37%,transparent 68%);content:'';opacity:0;transform:translateY(35%);transition:opacity .24s ease,transform .32s ease}.primary:hover,.primary:focus-visible{border-color:#9ff2df;color:#f5fffc;box-shadow:0 0 0 1px rgba(159,242,223,.18),0 0 18px rgba(46,196,166,.45),0 12px 30px rgba(46,196,166,.23),inset 0 1px 0 rgba(255,255,255,.68);transform:translateY(-1px)}.primary:hover::before,.primary:focus-visible::before{opacity:1;transform:translateY(0)}
+  @media(max-width:54rem){.engine-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:40rem){.engine-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.updates-card{padding:30px 20px}}
 </style>
