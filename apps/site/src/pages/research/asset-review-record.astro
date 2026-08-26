@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Asset review record | GenATK Research" description="A small worksheet for recording the inputs and checks behind a reviewed procedural asset.">
+  <article>
+    <p class="eyebrow">Research artifact · worksheet</p>
+    <h1>Asset review record</h1>
+    <p class="lede">A short record for teams that want a generated result to be discussable, reproducible, and reviewable later.</p>
+    <p>Variation alone is not enough for a production workflow. When someone approves a result, the team should be able to identify the chosen inputs, distinguish its appearance from its structure where useful, and record what was actually checked.</p>
+
+    <h2>Reusable record</h2>
+    <table>
+      <thead><tr><th>Field</th><th>What to record</th></tr></thead>
+      <tbody>
+        <tr><td>Asset identity</td><td>A project-local label or stable identifier for the reviewed result.</td></tr>
+        <tr><td>Generator revision</td><td>The version or commit used to make the result.</td></tr>
+        <tr><td>Seed or saved state</td><td>The selected seed, or enough saved state to reconstruct the output.</td></tr>
+        <tr><td>Chosen settings</td><td>Only the settings that materially affect the reviewed result.</td></tr>
+        <tr><td>Export reviewed</td><td>The actual file or build artifact checked, not only a preview.</td></tr>
+        <tr><td>Review outcome</td><td>Approved, needs changes, or rejected—plus concise notes.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>How to use it</h2>
+    <ol>
+      <li>Generate a candidate and choose the result worth discussing.</li>
+      <li>Record the identity, revision, inputs, and settings before review.</li>
+      <li>Check the actual exported artifact against the project’s requirements.</li>
+      <li>Keep the resulting decision with the record so later revisions have context.</li>
+    </ol>
+
+    <h2>Limits</h2>
+    <p>This worksheet does not prove that an asset is visually suitable, performant, licensed correctly, or compatible with every pipeline. It only makes the team’s review process more explicit. The <a href="/labs/seeded-assets/">seeded asset lab</a> illustrates one small part of that identity question.</p>
+  </article>
+</Base>

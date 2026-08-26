@@ -1,0 +1,16 @@
+{
+  "purpose": "Keep GenATK Labs educational, independently authored, and safe to publish before the product is announced.",
+  "allowed": [
+    "generic archetypes and original simple geometry",
+    "independent TypeScript examples",
+    "tool-agnostic workflow worksheets",
+    "clearly labelled illustrative limitations"
+  ],
+  "forbidden": [
+    "product source code or imports",
+    "product asset names, outputs, screenshots, or measurements",
+    "unreleased architecture, export details, or benchmarks",
+    "claims of GenATK product behavior or compatibility"
+  ],
+  "publicationRule": "Every lab page must state that it is illustrative and independent from product code."
+}

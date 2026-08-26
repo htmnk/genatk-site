@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Seeded asset identities | GenATK Lab" description="An independent TypeScript demonstration of seeded procedural variation and reviewable asset identities.">
+  <article>
+    <p class="eyebrow">GenATK Lab · illustrative</p>
+    <h1>A seed is useful when a team can name what it made.</h1>
+    <p class="lede">This small TypeScript lab produces simple 2D archetypes. It is deliberately independent from GenATK product code: its purpose is to make repeatability tangible, not to preview an unreleased tool.</p>
+
+    <section class="lab" aria-label="Seeded asset demonstration">
+      <div class="controls">
+        <label>Archetype <select id="archetype"><option value="arch">Arch</option><option value="beacon">Beacon</option><option value="pavilion">Pavilion</option></select></label>
+        <label>Seed <input id="seed" type="number" min="0" max="4294967295" value="42" inputmode="numeric" /></label>
+        <label>Appearance <select id="tone"><option value="moss">Moss</option><option value="sand">Sand</option><option value="ember">Ember</option></select></label>
+        <button id="randomise" type="button">Choose a seed</button>
+      </div>
+      <div class="stage-wrap"><div id="stage" class="stage" aria-live="polite"></div></div>
+      <dl class="identities">
+        <div><dt>Geometry identity</dt><dd><code id="geometry-id"></code></dd></div>
+        <div><dt>Appearance preset</dt><dd><code id="appearance-id"></code></dd></div>
+      </dl>
+      <p class="source-note">Try changing only Appearance: the geometry identity stays stable. Change the seed or archetype: it changes. These identifiers describe this lab’s simple shapes only; they do not identify a file, export, or production asset.</p>
+    </section>
+
+    <h2>What this demonstrates</h2>
+    <ul>
+      <li>The same archetype and seed reconstruct the same illustrated geometry.</li>
+      <li>An appearance choice can remain separate from the structural identity.</li>
+      <li>A review note can point at a concrete input set instead of an unspecified random output.</li>
+    </ul>
+
+    <h2>Minimal TypeScript use</h2>
+    <pre><code>const asset = createLabAsset(&#123;
+  archetype: 'arch',
+  seed: 42,
+  tone: 'moss',
+&#125;);
+
+console.log(asset.geometryId); // stable for these same inputs</code></pre>
+    <p>See the accompanying <a href="/research/asset-review-record/">asset review record</a> for the extra information a team should retain before treating a generated result as approved.</p>
+
+    <h2>What this does not demonstrate</h2>
+    <p>It does not measure rendering quality, file compatibility, geometry budgets, runtime performance, or any GenATK capability. It is a compact teaching model, not an implementation claim.</p>
+  </article>
+</Base>
+
+<script>
+  import { createLabAsset } from '../../lib/seeded-lab';
+
+  const archetype = document.querySelector<HTMLSelectElement>('#archetype')!;
+  const seed = document.querySelector<HTMLInputElement>('#seed')!;
+  const tone = document.querySelector<HTMLSelectElement>('#tone')!;
+  const stage = document.querySelector<HTMLDivElement>('#stage')!;
+  const geometryId = document.querySelector<HTMLElement>('#geometry-id')!;
+  const appearanceId = document.querySelector<HTMLElement>('#appearance-id')!;
+
+  function render() {
+    const asset = createLabAsset({
+      archetype: archetype.value as 'arch' | 'beacon' | 'pavilion',
+      seed: Number(seed.value),
+      tone: tone.value as 'moss' | 'sand' | 'ember',
+    });
+    stage.innerHTML = asset.svg;
+    geometryId.textContent = asset.geometryId;
+    appearanceId.textContent = asset.appearanceId;
+  }
+
+  document.querySelector('#randomise')?.addEventListener('click', () => {
+    seed.value = String(Math.floor(Math.random() * 4_294_967_295));
+    render();
+  });
+  [archetype, seed, tone].forEach((element) => element.addEventListener('input', render));
+  render();
+</script>
+
+<style>
+  .lab { border: 1px solid #4d563f; background: #1a1d17; border-radius: .8rem; padding: 1rem; margin: 2rem 0; }
+  .controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; align-items: end; }
+  label { display: grid; gap: .3rem; color: #c9cbc3; font-size: .9rem; }
+  select, input, button { border: 1px solid #667256; border-radius: .35rem; background: #121310; color: #edeee7; font: inherit; padding: .55rem; }
+  button { cursor: pointer; background: #c7df9d; color: #18200f; font-weight: 700; }
+  .stage-wrap { margin-top: 1rem; border-radius: .6rem; overflow: hidden; border: 1px solid #34372e; }
+  .stage :global(svg) { display: block; width: 100%; min-height: 14rem; }
+  .identities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+  .identities div { margin-top: 1rem; }
+  dt { color: #aeb39f; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+  dd { margin: .2rem 0 0; }
+  @media (max-width: 45rem) { .controls { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 30rem) { .controls, .identities { grid-template-columns: 1fr; } }
+</style>

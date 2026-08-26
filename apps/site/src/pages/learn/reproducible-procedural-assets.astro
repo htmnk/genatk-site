@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Reproducible procedural assets | GenATK" description="Why reproducibility matters when procedural generation moves from a sketch into a game-asset pipeline.">
+  <article>
+    <p class="eyebrow">Learn · Foundations</p>
+    <h1>Reproducible procedural assets are easier to review.</h1>
+    <p class="lede">Procedural generation becomes more useful in a pipeline when a team can return to a particular result, explain why it was selected, and check the file that will actually ship.</p>
+
+    <h2>Randomness needs a handle</h2>
+    <p>A seed is one common handle: given the same generator version and relevant inputs, it can make a variation findable again. That does not mean a seed is the entire identity of an asset. Generator revision, settings, source material, and export configuration may also matter.</p>
+    <p>Game engines commonly expose deterministic random streams for this reason. Godot documents a seed property for repeatable pseudo-random sequences, while Unreal documents Random Streams as a way to create repeatable random behavior. Those primitives are useful building blocks; production identity still requires a project-specific record.</p>
+
+    <h2>Separate structure from presentation when it helps</h2>
+    <p>Some parameters alter a result’s structure; others only change its palette, label, or presentation. Treating both as one opaque “random output” makes reviews fuzzy. Separating them lets a reviewer say, for example, that the selected structure is right but its presentation needs adjustment.</p>
+    <pre><code>const asset = createLabAsset(&#123;
+  archetype: 'arch',
+  seed: 42,
+  tone: 'moss',
+&#125;);
+
+// Changing tone changes the presentation, not this lab's geometry identity.</code></pre>
+    <p>The <a href="/labs/seeded-assets/">GenATK Lab</a> makes that distinction visible with a deliberately small independent TypeScript model.</p>
+
+    <h2>Review the export, not just the preview</h2>
+    <p>A viewport image does not answer every pipeline question. The exported artifact may have different limits, metadata, material bindings, naming, or compatibility concerns. A practical review records which artifact was checked and what the outcome was, alongside the inputs needed to regenerate it.</p>
+    <p>Use the <a href="/research/asset-review-record/">asset review record</a> as a starting worksheet. It is intentionally tool-agnostic so a team can adapt it to its own generator and engine.</p>
+
+    <h2>What reproducibility does not solve</h2>
+    <p>Repeatability does not prove visual quality, originality, legal clearance, performance, or suitability for a particular game. It simply gives those conversations a stable subject. The useful next step is to decide which checks your project requires, then make sure its records reflect them.</p>
+
+    <h2>Primary references</h2>
+    <ul>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/math/random_number_generation.html">Godot Engine documentation: Random number generation</a></li>
+      <li><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/random-streams-in-unreal-engine">Unreal Engine documentation: Random Streams</a></li>
+    </ul>
+    <p class="source-note">Updated August 26, 2026. This is an educational article, not a statement of unreleased GenATK features.</p>
+  </article>
+</Base>
