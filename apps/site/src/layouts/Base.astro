@@ -3,8 +3,9 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
+  noindex?: boolean;
 }
-const { title, description, canonical = Astro.url.pathname } = Astro.props;
+const { title, description, canonical = Astro.url.pathname, noindex = false } = Astro.props;
 const canonicalUrl = Astro.site ? new URL(canonical, Astro.site) : undefined;
 ---
 <!doctype html>
@@ -16,6 +17,7 @@ const canonicalUrl = Astro.site ? new URL(canonical, Astro.site) : undefined;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#080b11" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <title>{title}</title>
   </head>

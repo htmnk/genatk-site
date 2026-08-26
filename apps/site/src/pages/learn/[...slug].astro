@@ -8,7 +8,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const canonical = `/learn/${entry.id}/`;
-const articleSchema = Astro.site && {
+const isDraft = entry.data.status === 'draft';
+const articleSchema = !isDraft && Astro.site && {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: entry.data.title,
@@ -20,10 +21,10 @@ const articleSchema = Astro.site && {
   mainEntityOfPage: new URL(canonical, Astro.site).href,
 };
 ---
-<Base title={`${entry.data.title} | GenATK`} description={entry.data.description} canonical={canonical}>
+<Base title={`${entry.data.title} | GenATK`} description={entry.data.description} canonical={canonical} noindex={isDraft}>
   <article>
     <p class="eyebrow">{entry.data.audience.replaceAll('-', ' ')}</p>
-    {entry.data.status === 'draft' && <p class="eyebrow">Local draft preview — not public</p>}
+    {isDraft && <p class="eyebrow">Local draft preview — not public</p>}
     <h1>{entry.data.title}</h1>
     <p class="lede">{entry.data.description}</p>
     <p>By <a href={entry.data.authorUrl}>{entry.data.author}</a> · Reviewed <time datetime={entry.data.reviewedAt.toISOString()}>{entry.data.reviewedAt.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}</time></p>
