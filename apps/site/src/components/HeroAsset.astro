@@ -72,24 +72,34 @@ const { id = 'hero-asset' } = Astro.props;
       const windows = 1 + ((r() * 3) | 0); for (let i = 0; i < windows; i++) box(.31, .31, .05, -w / 2 + .5 + i * ((w - 1) / Math.max(windows - 1, 1)), h * .62, d / 2 + .03, 0xfbf4e8, .92);
       const trees = (r() * 3) | 0; for (let i = 0; i < trees; i++) { const a = r() * Math.PI * 2, rad = 2.2 + r() * .8, tx = Math.cos(a) * rad, tz = Math.sin(a) * rad; box(.14, .5, .14, tx, .25, tz, 0x8a5a34, .83); const geo = new THREE.IcosahedronGeometry(.35 + r() * .25, 0); disposables.push(geo); const crown = new THREE.Mesh(geo, material(ROOF[(r() * ROOF.length) | 0], .66)); crown.position.set(tx, .75 + r() * .3, tz); group.add(crown); const outline = wire(geo); outline.position.copy(crown.position); group.add(outline); }
     };
-    let dragging = false, previousX = 0, velocity = 0, morphProgress = 0, morphTimer = 0, disposed = false;
+    let dragging = false, previousX = 0, velocity = 0, morphProgress = 0, morphTimer = 0, resumeTimer = 0, autoPaused = false, disposed = false;
+    const showVariation = (seed: number) => {
+      slider.value = String(seed); output.value = String(seed); morphProgress = 1; group.rotation.y += .34;
+      canvas.dataset.morphing = 'true'; window.clearTimeout(morphTimer);
+      morphTimer = window.setTimeout(() => { delete canvas.dataset.morphing; }, 680); build(seed);
+    };
+    const pauseAutoAdvance = () => { window.clearTimeout(resumeTimer); autoPaused = true; };
+    const resumeAutoAdvance = () => { window.clearTimeout(resumeTimer); resumeTimer = window.setTimeout(() => { autoPaused = false; }, 1100); };
     renderer.domElement.addEventListener('pointerdown', (event) => { dragging = true; previousX = event.clientX; renderer.domElement.setPointerCapture(event.pointerId); renderer.domElement.style.cursor = 'grabbing'; });
     renderer.domElement.addEventListener('pointermove', (event) => { if (!dragging) return; const delta = event.clientX - previousX; previousX = event.clientX; group.rotation.y += delta * .008; velocity = delta * .008; });
     renderer.domElement.addEventListener('pointerup', () => { dragging = false; renderer.domElement.style.cursor = 'grab'; });
-    slider.addEventListener('input', () => {
-      const seed = Number(slider.value);
-      output.value = String(seed);
-      morphProgress = 1;
-      group.rotation.y += .34;
-      canvas.dataset.morphing = 'true';
-      window.clearTimeout(morphTimer);
-      morphTimer = window.setTimeout(() => { delete canvas.dataset.morphing; }, 680);
-      build(seed);
-    });
+    slider.addEventListener('pointerdown', pauseAutoAdvance);
+    slider.addEventListener('pointerup', resumeAutoAdvance);
+    slider.addEventListener('pointercancel', resumeAutoAdvance);
+    slider.addEventListener('focus', pauseAutoAdvance);
+    slider.addEventListener('blur', resumeAutoAdvance);
+    slider.addEventListener('keydown', pauseAutoAdvance);
+    slider.addEventListener('keyup', resumeAutoAdvance);
+    slider.addEventListener('input', () => { pauseAutoAdvance(); showVariation(Number(slider.value)); });
+    const autoAdvance = window.setInterval(() => {
+      if (autoPaused || document.hidden) return;
+      const next = Number(slider.value) >= Number(slider.max) ? Number(slider.min) : Number(slider.value) + 1;
+      showVariation(next);
+    }, 3000);
     const resize = () => { const rect = canvas.getBoundingClientRect(); renderer.setSize(Math.max(rect.width, 1), Math.max(rect.height, 1), false); camera.aspect = rect.width / Math.max(rect.height, 1); camera.updateProjectionMatrix(); };
     const observer = new ResizeObserver(resize); observer.observe(canvas); resize(); build(Number(slider.value));
     const loop = () => { if (disposed) return; requestAnimationFrame(loop); if (!dragging) { if (Math.abs(velocity) > .0004) { group.rotation.y += velocity; velocity *= .94; } else group.rotation.y += .0035; } if (morphProgress > .001) { const pulse = Math.sin(morphProgress * Math.PI); group.scale.setScalar(1 - pulse * .11); group.rotation.y += morphProgress * .095; morphProgress *= .86; } else group.scale.setScalar(1); renderer.render(scene, camera); }; loop();
-    return () => { disposed = true; window.clearTimeout(morphTimer); observer.disconnect(); clear(); renderer.dispose(); renderer.domElement.remove(); };
+    return () => { disposed = true; window.clearTimeout(morphTimer); window.clearTimeout(resumeTimer); window.clearInterval(autoAdvance); observer.disconnect(); clear(); renderer.dispose(); renderer.domElement.remove(); };
   }
   document.querySelectorAll<HTMLElement>('[data-hero-asset]').forEach((root) => mount(root));
 </script>
