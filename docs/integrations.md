@@ -96,9 +96,14 @@ The weekly research director now ranks public-safe hypotheses from three permitt
 1. Keep the existing GSC OAuth credentials as configured.
 2. Add and verify `genatk.com` in Bing Webmaster Tools when convenient. Export keyword research data, normalize it as JSON (`{ "rows": [{ "keyword": "…", "monthlySearches": 0, "competition": "unknown" }] }`), then run:
    ```sh
-   npm run seo:keyword-import -- --source bing-webmaster-tools --file /absolute/path/to/bing-keywords.json
+   npm run seo:keyword-import -- --source bing-webmaster-tools --file /absolute/path/to/bing-keywords.json --country US --language en
    npm run seo:keyword-intelligence
    ```
-3. Later, Google Keyword Planner can use the same normalized format with `--source google-keyword-planner`. This is intentionally import-first: it costs nothing and avoids adding Ads credentials until the volume is worth it.
+3. Google Keyword Planner exports can be imported directly as downloaded CSV files, including its UTF-16 export format:
+   ```sh
+   npm run seo:keyword-import -- --source google-keyword-planner --file "/absolute/path/to/Keyword Stats.csv" --country US --language en
+   npm run seo:keyword-intelligence
+   ```
+   Each import updates `keyword-demand-latest.json` and preserves a local market snapshot such as `keyword-demand-us-en.json`. This is intentionally import-first: it avoids Ads API credentials until the volume is worth it.
 
 All imported demand reports are gitignored, private to the local research workflow, and cannot publish content. The weekly report holds every topic until a permitted source supplies demand evidence.
