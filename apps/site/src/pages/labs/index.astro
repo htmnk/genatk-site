@@ -1,16 +1,29 @@
 ---
 import Base from '../../layouts/Base.astro';
 ---
-<Base title="Labs | GenATK" description="Small, public experiments for discussing reproducible procedural generation.">
-  <article>
-    <p class="eyebrow">GenATK Labs</p>
-    <h1>Small experiments, explicit limits.</h1>
-    <p class="lede">Labs are independently authored educational prototypes. They are not product previews, benchmarks, or compatibility promises.</p>
-    <ul class="card-list">
-      <li>
-        <h2><a href="/labs/seeded-assets/">Wayfinder Lab</a></h2>
-        <p>Explore an original seeded 3D landmark, rotate it freely, and separate a structural identity from an appearance preset.</p>
-      </li>
-    </ul>
+<Base title="Labs | GenATK" description="Small, public instruments for discussing deterministic procedural generation.">
+  <article class="labs-intro">
+    <p class="eyebrow">GENATK / LABS</p>
+    <h1>Experiments with<br /><em>explicit limits.</em></h1>
+    <p class="lede">Each study is independently authored for this site. They make one production question tangible without claiming to represent an unreleased tool.</p>
   </article>
+  <section class="lab-list" aria-label="Public lab studies">
+    <a class="lab-card featured-lab" href="/labs/seeded-assets/">
+      <span class="lab-number">01</span><span class="lab-status">LIVE STUDY</span>
+      <div><p>WAYFINDER</p><h2>One seed.<br />One landmark.</h2><span class="open">Enter study ↗</span></div>
+    </a>
+    <article class="lab-card future-lab">
+      <span class="lab-number">02</span><span class="lab-status">FIELD NOTE</span>
+      <div><p>REVIEW RECORD</p><h2>What should travel with a generated asset?</h2><a href="/research/asset-review-record/">Read the worksheet →</a></div>
+    </article>
+    <article class="lab-card future-lab">
+      <span class="lab-number">03</span><span class="lab-status">IN DEVELOPMENT</span>
+      <div><p>VARIATION MAP</p><h2>Compare a family of variations without losing the thread.</h2><span>Future public study</span></div>
+    </article>
+  </section>
 </Base>
+<style>
+  .labs-intro, .lab-list { width: min(100%, 78rem); margin: auto; padding-inline: clamp(1.15rem, 4vw, 2.5rem); } .labs-intro { padding-block: clamp(4rem, 8vw, 7rem) 3rem; } .labs-intro h1 { margin: .65rem 0 1.3rem; font-size: clamp(3.5rem, 7vw, 7rem); line-height: .9; letter-spacing: -.07em; } .labs-intro h1 em { color: var(--lime); font-weight: 500; } .labs-intro .lede { max-width: 48rem; }
+  .lab-list { display: grid; grid-template-columns: 1.25fr .75fr; gap: 1px; padding-bottom: 7rem; background: var(--line); } .lab-card { position: relative; display: flex; min-height: 24rem; padding: 1.45rem; border: 0; background: var(--panel); color: var(--text); text-decoration: none; } .lab-card:nth-child(3) { grid-column: 2; } .lab-number, .lab-status { position: absolute; top: 1.3rem; color: var(--mint); font-size: .68rem; font-weight: 800; letter-spacing: .12em; } .lab-number { left: 1.4rem; } .lab-status { right: 1.4rem; color: var(--muted); } .lab-card > div { align-self: end; } .lab-card p { color: var(--lime); font-size: .7rem; font-weight: 800; letter-spacing: .12em; } .lab-card h2 { max-width: 10ch; margin: .55rem 0 1.25rem; font-size: clamp(2rem, 3.5vw, 3.6rem); line-height: .93; letter-spacing: -.06em; } .lab-card a, .open { color: var(--lime); font-size: .83rem; font-weight: 750; } .featured-lab { overflow: hidden; background: radial-gradient(circle at 57% 38%, #38505a, #17212b 54%, #0c1017); } .featured-lab::before { position: absolute; inset: 0; background-image: linear-gradient(#d6f7e30d 1px, transparent 1px), linear-gradient(90deg, #d6f7e30d 1px, transparent 1px); background-size: 2.2rem 2.2rem; content: ''; } .featured-lab::after { position: absolute; top: 16%; right: 13%; width: 33%; height: 59%; background: linear-gradient(111deg, #d7ff91 0 21%, #8ac876 21% 41%, #3a5d49 41% 68%, #172723 68%); clip-path: polygon(50% 0, 100% 28%, 83% 100%, 18% 100%, 0 28%); content: ''; filter: drop-shadow(0 0 1.8rem #d6ff8b44); } .future-lab { min-height: 0; } .future-lab:nth-child(2) { background: #131b26; } .future-lab:nth-child(3) { background: #11161e; } .future-lab h2 { font-size: clamp(1.8rem, 3vw, 2.75rem); } .future-lab span:last-child { color: var(--muted); font-size: .82rem; }
+  @media (max-width: 44rem) { .lab-list { grid-template-columns: 1fr; } .lab-card:nth-child(3) { grid-column: auto; } .lab-card { min-height: 17rem; } .featured-lab { min-height: 25rem; } }
+</style>

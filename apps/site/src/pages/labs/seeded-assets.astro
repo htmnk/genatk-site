@@ -5,16 +5,16 @@ import Waitlist from '../../components/Waitlist.astro';
 <Base title="Wayfinder Lab | GenATK" description="Create and inspect an original, seeded 3D Wayfinder object in a public GenATK lab.">
   <section class="lab-hero">
     <div class="lab-intro">
-      <p class="eyebrow">GenATK Lab · Public prototype</p>
-      <h1>Turn one number into a landmark.</h1>
-      <p class="lede">The Wayfinder is an original 3D study of seeded variation: a hand-built architectural signal that changes predictably with its input. It is an educational prototype, not a product preview.</p>
-      <div class="lab-notes"><span>Drag to orbit</span><span>Scroll to zoom</span><span>Same seed, same silhouette</span></div>
+      <p class="eyebrow"><span class="lab-index">01</span> Wayfinder / public study</p>
+      <h1>A landmark you can interrogate.</h1>
+      <p class="lede">A hand-built 3D signal for testing one useful idea: a variation is easier to review when its rules stay visible. This is an educational prototype, not a product preview.</p>
+      <div class="lab-notes"><span>Drag to orbit</span><span>Scroll to zoom</span><span>Seed returns the same form</span></div>
       <div class="seed-presets" aria-label="Wayfinder starting points"><span>Starting points</span><button type="button" data-preset="shrine:4287:verdant">Verdant shrine</button><button type="button" data-preset="beacon:9012:solar">Solar beacon</button><button type="button" data-preset="gate:1717:ember">Ember gate</button></div>
     </div>
     <div class="scene-shell">
       <div id="wayfinder-scene" class="scene" aria-label="Interactive three-dimensional Wayfinder study"></div>
       <div class="scene-status" id="scene-status" aria-live="polite">Preparing scene…</div>
-      <div class="scene-overlay" aria-hidden="true"><span>WAYFINDER / 01</span><span>GENATK LAB</span></div>
+      <div class="scene-overlay" aria-hidden="true"><span>WAYFINDER / 01</span><span>GENATK / PUBLIC</span></div>
     </div>
   </section>
 
@@ -26,11 +26,12 @@ import Waitlist from '../../components/Waitlist.astro';
       <button id="randomise" type="button">New variation <span aria-hidden="true">↗</span></button>
       <button class="secondary" id="reset-view" type="button">Reset view</button>
     </div>
-    <div class="identities"><div><span>Geometry identity</span><code id="geometry-id">—</code></div><div><span>Appearance preset</span><code id="appearance-id">—</code></div><div><span>Review state</span><strong>Illustrative only</strong></div><button class="copy-state" id="copy-state" type="button">Copy review state</button></div>
-    <p class="control-note" id="control-note" aria-live="polite">A review state records the chosen form, seed, palette, and public-lab identity.</p>
+    <div class="identities"><div><span>Geometry identity</span><code id="geometry-id">—</code></div><div><span>Appearance preset</span><code id="appearance-id">—</code></div><div><span>Review state</span><strong>Illustrative only</strong></div><button class="copy-state" id="copy-state" type="button">Copy review state</button><button class="copy-state" id="share-state" type="button">Copy share link</button></div>
+    <p class="control-note" id="control-note" aria-live="polite">A review state records the chosen form, seed, palette, and public-lab identity. It is not a product asset.</p>
   </section>
 
   <article>
+    <p class="article-kicker">THE REVIEWABLE VARIATION</p>
     <h2>What this lab is for</h2>
     <p>It gives a review conversation a stable starting point. A team can call out a particular form, preserve the seed and generator revision it used, then decide whether the actual exported asset meets its own requirements.</p>
     <div class="three-up"><div><span>01</span><h3>Choose</h3><p>Pick a form, palette, and seed—then see a concrete variation.</p></div><div><span>02</span><h3>Identify</h3><p>The structural identifier is stable for a form and seed, independent of its palette.</p></div><div><span>03</span><h3>Review</h3><p>Carry the selected inputs into a project’s own review and export checks.</p></div></div>
@@ -53,6 +54,13 @@ import Waitlist from '../../components/Waitlist.astro';
   const geometryId = document.querySelector<HTMLElement>('#geometry-id')!;
   const appearanceId = document.querySelector<HTMLElement>('#appearance-id')!;
   const controlNote = document.querySelector<HTMLElement>('#control-note')!;
+  const query = new URLSearchParams(window.location.search);
+  const suppliedForm = query.get('form');
+  const suppliedSeed = query.get('seed');
+  const suppliedLight = query.get('light');
+  if (suppliedForm && ['shrine', 'beacon', 'gate'].includes(suppliedForm)) archetype.value = suppliedForm;
+  if (suppliedSeed && /^\d{1,10}$/.test(suppliedSeed)) seed.value = suppliedSeed;
+  if (suppliedLight && ['verdant', 'solar', 'ember'].includes(suppliedLight)) palette.value = suppliedLight;
   const paletteMap: Record<WayfinderPalette, { stone: number; accent: number; core: number; ground: number }> = {
     verdant: { stone: 0x526b52, accent: 0xd6f79e, core: 0xb6ff7f, ground: 0x102015 }, solar: { stone: 0x80694e, accent: 0xffdc98, core: 0xffbb5b, ground: 0x211a10 }, ember: { stone: 0x77564f, accent: 0xffb090, core: 0xff765f, ground: 0x231312 },
   };
@@ -87,6 +95,9 @@ import Waitlist from '../../components/Waitlist.astro';
       if (input.archetype === 'beacon') addMesh(new THREE.ConeGeometry(.74 * spec.crownScale, spec.height * .5, 5), darkStone, [0, coreY + .75, 0], [0, Math.PI / 5, 0]); else if (input.archetype === 'gate') addMesh(new THREE.TorusGeometry(.74 * spec.crownScale, .15, 8, 24, Math.PI), accent, [0, coreY + .14, 0], [0, 0, Math.PI]); else addMesh(new THREE.DodecahedronGeometry(.7 * spec.crownScale, 0), darkStone, [0, coreY + .82, 0], [.4, .3, 0]);
       for (let index = 0; index < spec.shardCount; index += 1) { const angle = (index / spec.shardCount) * Math.PI * 2; const shard = new THREE.Mesh(new THREE.TetrahedronGeometry(.14 + (index % 3) * .045, 0), accent); shard.position.set(Math.cos(angle) * spec.orbitRadius, coreY + Math.sin(index * 1.7) * .36, Math.sin(angle) * spec.orbitRadius); shard.rotation.set(angle, angle * 1.6, .5); shard.castShadow = true; orbitGroup.add(shard); }
       geometryId.textContent = spec.geometryId; appearanceId.textContent = spec.appearanceId; status.textContent = `${input.archetype} variation ready`;
+      const nextQuery = new URLSearchParams(window.location.search);
+      nextQuery.set('form', input.archetype); nextQuery.set('seed', String(input.seed)); nextQuery.set('light', input.palette);
+      window.history.replaceState({}, '', `${window.location.pathname}?${nextQuery.toString()}`);
     }
     function resize() { const { width, height } = host.getBoundingClientRect(); if (!width || !height) return; camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height, false); }
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -95,6 +106,7 @@ import Waitlist from '../../components/Waitlist.astro';
     document.querySelector('#reset-view')?.addEventListener('click', () => { camera.position.set(6.5, 4.4, 7.2); controls.target.set(0, 1.2, 0); controls.update(); });
     document.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach((button) => button.addEventListener('click', () => { const [nextArchetype, nextSeed, nextPalette] = button.dataset.preset!.split(':'); archetype.value = nextArchetype; seed.value = nextSeed; palette.value = nextPalette; build(); controlNote.textContent = `${button.textContent?.trim()} loaded. The state is still illustrative only.`; }));
     document.querySelector('#copy-state')?.addEventListener('click', async () => { const reviewState = `Wayfinder public lab | form=${archetype.value}; seed=${seed.value}; palette=${palette.value}; geometry=${geometryId.textContent}; appearance=${appearanceId.textContent}; illustrative-only`; try { await navigator.clipboard.writeText(reviewState); controlNote.textContent = 'Review state copied. It records this public illustration, not a product asset.'; } catch { controlNote.textContent = reviewState; } });
+    document.querySelector('#share-state')?.addEventListener('click', async () => { try { await navigator.clipboard.writeText(window.location.href); controlNote.textContent = 'Share link copied. It reopens this public, illustrative state.'; } catch { controlNote.textContent = window.location.href; } });
     [archetype, seed, palette].forEach((element) => element.addEventListener('input', build)); new ResizeObserver(resize).observe(host); build(); resize(); requestAnimationFrame(render);
   }
   })();
@@ -106,4 +118,15 @@ import Waitlist from '../../components/Waitlist.astro';
   .lab-panel { width: min(100% - 2.3rem, 71rem); margin: 0 auto; padding: 1.1rem; border: 1px solid #3d493b; border-radius: 1rem; background: #111611; box-shadow: 0 1.5rem 3rem #0003; } .control-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto auto; gap: .7rem; align-items: end; } label { display: grid; gap: .3rem; color: #b8c1b3; font-size: .8rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; } select, input, button { width: 100%; border: 1px solid #51604c; border-radius: .55rem; background: #0b0e0b; color: #eef4e9; padding: .7rem; font: inherit; } button { width: auto; border: 0; background: #d6f79e; color: #152010; font-weight: 750; cursor: pointer; white-space: nowrap; } button.secondary, button.copy-state { border: 1px solid #667362; background: transparent; color: #d8e2d2; } .identities { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 1rem; border-top: 1px solid #2d382c; margin-top: 1rem; padding-top: 1rem; } .identities div { display: grid; gap: .2rem; } .identities span { color: #9eaa99; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; } .identities strong { color: #e5ebe0; font-size: .9rem; } .copy-state { align-self: end; font-size: .84rem; } .control-note { min-height: 1.6rem; margin: .8rem 0 0; color: #aeb9a7; font-size: .83rem; }
   article { width: min(100%, 76rem); margin: auto; padding-inline: clamp(1.15rem, 4vw, 2.5rem); } article > :not(.three-up, .waitlist) { max-width: 48rem; } .three-up { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0 4rem; } .three-up div { padding: 1.15rem; border: 1px solid #2e382d; border-radius: 1rem; background: #141914; } .three-up span { color: #d6f79e; font-size: .8rem; font-weight: 750; } .three-up h3 { margin: .55rem 0; } .three-up p { margin: 0; color: #b9c2b5; }
   @media (max-width: 56rem) { .lab-hero { grid-template-columns: 1fr; } .scene-shell { min-height: min(32rem, 90vw); } .control-grid { grid-template-columns: repeat(3, 1fr); } .control-grid button { width: 100%; } .identities { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 38rem) { .lab-hero { padding-top: 2.5rem; } .scene-shell { min-height: 24rem; } .control-grid, .identities, .three-up { grid-template-columns: 1fr; } .seed-presets { align-items: flex-start; flex-direction: column; } }
+
+  /* The lab is deliberately styled as an instrument: dense controls, quiet framing,
+     and a single illuminated object rather than a generic dashboard. */
+  .lab-hero { width: min(100%, 78rem); grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: clamp(2rem, 7vw, 6.5rem); padding-top: clamp(3.2rem, 7vw, 6rem); }
+  .lab-intro h1 { max-width: 8ch; margin: .75rem 0 1.25rem; font-size: clamp(3.25rem, 6vw, 5.9rem); line-height: .91; letter-spacing: -.065em; }
+  .lab-index { display: inline-grid; width: 1.35rem; height: 1.35rem; margin-right: .45rem; place-items: center; border: 1px solid #d5ff864d; border-radius: 50%; color: var(--lime); font-size: .63rem; vertical-align: .12rem; }
+  .lab-notes span, .seed-presets button { border-color: #44536a; background: #121a26; color: #d8e7e9; } .seed-presets > span { color: var(--muted); } .seed-presets button { transition: border-color .2s ease, color .2s ease; } .seed-presets button:hover { border-color: var(--lime); color: var(--lime); }
+  .scene-shell { min-height: 38rem; border-color: #3e4b60; border-radius: 1.25rem; background: radial-gradient(circle at 50% 35%, #304754, #111923 57%, #080b11); box-shadow: inset 0 0 8rem #010205aa, 0 2rem 5rem #0007; } .scene-shell::before { background-image: linear-gradient(#c8f5e20c 1px, transparent 1px), linear-gradient(90deg, #c8f5e20c 1px, transparent 1px); background-size: 2.5rem 2.5rem; } .scene-status { border-color: #506179; background: #0b111bd9; color: #d8e7e9; } .scene-overlay { color: #d8e7e988; }
+  .lab-panel { width: min(100% - 2.3rem, 74rem); margin-top: -2.4rem; position: relative; z-index: 3; border-color: #3e4b60; border-radius: .9rem; background: #101722eF; backdrop-filter: blur(14px); } .control-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) auto auto; } .control-grid label { color: #b8c7ce; } .control-grid select, .control-grid input { border-color: #46566a; background: #0b1018; color: #edf5f3; } .control-grid button { border-radius: .42rem; background: var(--lime); color: #10170c; } .control-grid button.secondary, .copy-state { border: 1px solid #526278; background: transparent; color: #d6e3e5; } .identities { grid-template-columns: repeat(3, 1fr) auto auto; border-color: #2f3d50; } .identities span { color: #96a9b1; } .identities strong { color: #e8f1ee; } .control-note { color: #aab9bd; }
+  article { width: min(100%, 78rem); padding-top: 5rem; } article > h2 { margin-top: .45rem; font-size: clamp(2.25rem, 4vw, 3.8rem); letter-spacing: -.055em; } article > p { color: var(--muted); } .article-kicker { color: var(--lime); font-size: .7rem; font-weight: 800; letter-spacing: .13em; } .three-up { gap: 1px; border: 1px solid var(--line); background: var(--line); } .three-up div { border: 0; border-radius: 0; background: var(--panel); } .three-up span { color: var(--lime); } .three-up p { color: var(--muted); }
+  @media (max-width: 56rem) { .lab-hero { grid-template-columns: 1fr; } .scene-shell { min-height: min(37rem, 105vw); } .lab-panel { margin-top: 0; } .control-grid { grid-template-columns: repeat(3, 1fr); } .identities { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 38rem) { .scene-shell { min-height: 26rem; } .control-grid, .identities { grid-template-columns: 1fr; } .lab-intro h1 { font-size: 3.5rem; } }
 </style>

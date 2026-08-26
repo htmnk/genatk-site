@@ -15,69 +15,66 @@ const canonicalUrl = Astro.site ? new URL(canonical, Astro.site) : undefined;
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#15201a" />
+    <meta name="theme-color" content="#080b11" />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <title>{title}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header>
-      <a class="brand" href="/" aria-label="GenATK home"><span class="brand-mark" aria-hidden="true">✦</span><span>GenATK</span><small>RESEARCH</small></a>
-      <nav aria-label="Primary"><a href="/labs/">Labs</a><a href="/learn/">Learn</a><a href="/research/">Research</a><a href="/about/">About</a><a class="nav-cta" href="/#early-access">Early access</a></nav>
+      <a class="brand" href="/" aria-label="GenATK home"><span class="brand-mark" aria-hidden="true"><i></i><b></b></span><span>GenATK</span><small>BUILDING IN PUBLIC</small></a>
+      <nav aria-label="Primary"><a href="/labs/">Labs</a><a href="/learn/">Learn</a><a href="/research/">Research</a><a href="/about/">About</a><a class="nav-cta" href="/#early-access">Join early access <span aria-hidden="true">↗</span></a></nav>
     </header>
     <main id="main-content"><slot /></main>
-    <footer><span class="brand"><span class="brand-mark" aria-hidden="true">✦</span>GenATK</span><span>Generative Asset Toolkit · Offline-minded procedural tools.</span><span><a href="/privacy/">Privacy</a> · <a href="/research/">Research standard</a></span></footer>
+    <footer><span class="brand"><span class="brand-mark" aria-hidden="true"><i></i><b></b></span>GenATK</span><span>Generative Asset Toolkit · Local-first procedural studies.</span><span><a href="/privacy/">Privacy</a> · <a href="/research/">Research standard</a></span></footer>
   </body>
 </html>
 
 <style is:global>
-  :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #0b0d0c; color: #f0f2ec; }
+  :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; background: #080b11; color: #f1f5fa; --ink: #080b11; --ink-soft: #0f1520; --panel: #121a28; --line: #293449; --line-bright: #40516d; --text: #f1f5fa; --muted: #aab7c8; --lime: #cbff75; --mint: #85f4d0; --violet: #aa8cff; --display: Iowan Old Style, Palatino Linotype, Book Antiqua, ui-serif, Georgia, serif; }
   * { box-sizing: border-box; }
-  html { background: #0b0d0c; }
-  body { margin: 0; line-height: 1.6; background: radial-gradient(circle at 50% -20%, #243226 0, #0b0d0c 42rem); }
-  .skip-link { position: fixed; z-index: 10; left: 1rem; top: 1rem; transform: translateY(-180%); border-radius: .5rem; background: #d6f79e; color: #152010; padding: .55rem .75rem; font-weight: 750; text-decoration: none; transition: transform .15s ease; } .skip-link:focus { transform: translateY(0); }
-  header, main, footer { width: min(100%, 76rem); margin: auto; padding-inline: clamp(1.15rem, 4vw, 2.5rem); }
-  header { display: flex; justify-content: space-between; align-items: center; min-height: 5.5rem; border-bottom: 1px solid #2b312b; }
-  .brand { display: inline-flex; align-items: center; gap: .5rem; color: #f0f2ec; font-weight: 750; letter-spacing: -.03em; text-decoration: none; } .brand small { color: #9fac98; font-size: .57rem; font-weight: 800; letter-spacing: .13em; }
-  .brand-mark { display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: .5rem; color: #182114; background: #d6f79e; font-size: 1.1rem; }
+  html { background: #080b11; }
+  body { min-width: 20rem; margin: 0; line-height: 1.6; background: radial-gradient(ellipse 65rem 38rem at 73% -10%, #25395d9c, transparent 65%), radial-gradient(ellipse 40rem 35rem at -12% 34%, #173a3675, transparent 66%), #080b11; }
+  body::before { position: fixed; z-index: -1; inset: 0; background-image: linear-gradient(#ffffff03 1px, transparent 1px), linear-gradient(90deg, #ffffff03 1px, transparent 1px); background-size: 4rem 4rem; content: ''; mask-image: linear-gradient(to bottom, black, transparent 72%); pointer-events: none; }
+  .skip-link { position: fixed; z-index: 20; left: 1rem; top: 1rem; transform: translateY(-180%); border-radius: .5rem; background: var(--lime); color: #101907; padding: .55rem .75rem; font-weight: 800; text-decoration: none; transition: transform .15s ease; } .skip-link:focus { transform: translateY(0); }
+  header, main, footer { width: min(100%, 82rem); margin: auto; padding-inline: clamp(1.15rem, 4vw, 2.5rem); }
+  header { position: relative; z-index: 5; display: flex; justify-content: space-between; align-items: center; min-height: 5.75rem; border-bottom: 1px solid #ffffff14; }
+  .brand { display: inline-flex; align-items: center; gap: .55rem; color: var(--text); font-weight: 780; letter-spacing: -.045em; text-decoration: none; } .brand small { color: #8091a8; font-size: .55rem; font-weight: 800; letter-spacing: .14em; }
+  .brand-mark { position: relative; display: inline-block; width: 1.65rem; height: 1.65rem; overflow: hidden; border: 1px solid #dfffb0; border-radius: .48rem; background: linear-gradient(140deg, var(--lime), var(--mint)); box-shadow: 0 0 1.6rem #a5ff8a44; } .brand-mark i, .brand-mark b { position: absolute; display: block; background: #111b19; transform: rotate(45deg); } .brand-mark i { width: .68rem; height: .68rem; left: .48rem; top: .2rem; } .brand-mark b { width: .88rem; height: .88rem; left: .38rem; bottom: -.45rem; }
   nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: clamp(.6rem, 2vw, 1.4rem); }
-  nav a { color: #b9c0b5; font-size: .92rem; text-decoration: none; } .nav-cta { border: 1px solid #61735a; border-radius: 999px; color: #e7f3df; padding: .3rem .65rem; }
-  nav a:hover, nav a:focus-visible { color: #d6f79e; }
-  a { color: #d6f79e; text-underline-offset: .17em; }
+  nav a { color: #b9c6d7; font-size: .88rem; text-decoration: none; transition: color .16s ease, border-color .16s ease, background .16s ease; } .nav-cta { border: 1px solid #9bcf6780; border-radius: 999px; color: #ecffd6; padding: .38rem .7rem; background: #caff7510; }
+  nav a:hover, nav a:focus-visible { color: var(--lime); } .nav-cta:hover, .nav-cta:focus-visible { border-color: var(--lime); background: #caff7520; }
+  a { color: var(--lime); text-underline-offset: .17em; }
   article { max-width: 48rem; padding-block: 3.5rem; }
-  h1, h2, h3 { line-height: 1.06; letter-spacing: -.045em; }
+  h1, h2, h3 { line-height: .98; letter-spacing: -.055em; }
   h1 { max-width: 15ch; margin: .45rem 0 1.35rem; font-size: clamp(2.65rem, 7vw, 5.4rem); }
   h2 { margin-top: 3.5rem; font-size: clamp(1.65rem, 4vw, 2.5rem); }
   h3 { font-size: 1.25rem; }
-  .eyebrow { color: #aeb9a7; text-transform: uppercase; letter-spacing: .11em; font-size: .73rem; font-weight: 700; }
-  .lede { max-width: 42rem; color: #c9d0c4; font-size: clamp(1.1rem, 2vw, 1.3rem); }
-  .proof-summary { border: 1px solid #455040; background: #141914; padding: 1.1rem 1.2rem; border-radius: 1rem; }
+  .eyebrow { color: #91a4bb; text-transform: uppercase; letter-spacing: .13em; font-size: .7rem; font-weight: 780; }
+  .lede { max-width: 42rem; color: #c5d0df; font-size: clamp(1.1rem, 2vw, 1.3rem); }
+  .proof-summary { border: 1px solid var(--line-bright); background: #101722; padding: 1.1rem 1.2rem; border-radius: 1rem; }
   .proof-summary h2 { margin: 0 0 .55rem; font-size: 1.1rem; }
   .proof-summary ul { margin: .4rem 0 0; padding-left: 1.2rem; }
   .proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 1.5rem 0; }
-  .proof-grid figure { margin: 0; border: 1px solid #2e362e; border-radius: .8rem; overflow: hidden; background: #141914; }
-  .proof-grid img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; background: #20241c; }
-  .proof-grid figcaption { padding: .35rem .55rem; color: #aeb9a7; font-size: .82rem; }
-  .source-note, .fine-print { color: #aeb9a7; font-size: .9rem; }
+  .proof-grid figure { margin: 0; border: 1px solid var(--line); border-radius: .8rem; overflow: hidden; background: #101722; }
+  .proof-grid img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; background: #161f2e; }
+  .proof-grid figcaption { padding: .35rem .55rem; color: var(--muted); font-size: .82rem; }
+  .source-note, .fine-print { color: var(--muted); font-size: .9rem; }
   .card-list { display: grid; gap: 1rem; padding: 0; list-style: none; }
-  .card-list li { border: 1px solid #2e362e; background: linear-gradient(140deg, #151a15, #101310); border-radius: 1rem; padding: 1.25rem 1.35rem; }
+  .card-list li { border: 1px solid var(--line); background: linear-gradient(140deg, #151e2c, #0d121b); border-radius: 1rem; padding: 1.25rem 1.35rem; }
   .card-list h2 { margin: 0 0 .35rem; font-size: 1.35rem; }
-  .card-list p { margin: .35rem 0; color: #bdc6b8; }
-  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0; }
-  th, td { border: 1px solid #2e362e; padding: .7rem; text-align: left; vertical-align: top; }
-  th { background: #171c17; }
-  code { background: #1d241b; border-radius: .3rem; padding: .13rem .3rem; }
-  pre { overflow: auto; padding: 1rem; border-radius: .8rem; background: #141914; border: 1px solid #2e362e; }
-  .waitlist { display: grid; grid-template-columns: minmax(0, .9fr) minmax(18rem, 1.1fr); gap: 2rem; align-items: center; margin: 4rem 0 0; padding: 1.5rem; border: 1px solid #596950; border-radius: 1.15rem; background: linear-gradient(130deg, #1a2518, #101510); box-shadow: 0 1.5rem 3rem #0004; }
+  .card-list p { margin: .35rem 0; color: #bdc8d7; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0; } th, td { border: 1px solid var(--line); padding: .7rem; text-align: left; vertical-align: top; } th { background: #151f2e; }
+  code { background: #1a2637; border-radius: .3rem; padding: .13rem .3rem; } pre { overflow: auto; padding: 1rem; border-radius: .8rem; background: #101722; border: 1px solid var(--line); }
+  .waitlist { display: grid; grid-template-columns: minmax(0, .9fr) minmax(18rem, 1.1fr); gap: 2rem; align-items: center; margin: 4rem 0 0; padding: 1.5rem; border: 1px solid #7da1a266; border-radius: 1.15rem; background: linear-gradient(130deg, #172631, #11121e 60%, #1c1a32); box-shadow: 0 1.5rem 3rem #0005; }
   .waitlist h2 { margin: .3rem 0; font-size: 1.75rem; }
-  .waitlist p { margin: .5rem 0; color: #c7d1c1; }
+  .waitlist p { margin: .5rem 0; color: #c7d1dc; }
   .waitlist form { min-width: 0; }
-  .waitlist label { display: block; margin-bottom: .35rem; color: #c7d1c1; font-size: .9rem; }
+  .waitlist label { display: block; margin-bottom: .35rem; color: #c7d1dc; font-size: .9rem; }
   .waitlist-row { display: flex; gap: .5rem; }
-  .waitlist input { min-width: 0; flex: 1; border: 1px solid #728169; border-radius: .6rem; background: #0c0f0c; color: #f0f2ec; padding: .72rem .8rem; font: inherit; }
-  .waitlist button, .button { border: 0; border-radius: .6rem; background: #d6f79e; color: #152010; padding: .72rem .95rem; font: inherit; font-weight: 750; cursor: pointer; text-decoration: none; }
-  .waitlist button:hover, .button:hover { background: #e4ffbd; }
-  footer { display: flex; gap: 1rem; align-items: center; justify-content: space-between; border-top: 1px solid #2b312b; color: #aeb9a7; margin-top: 5rem; padding-block: 1.5rem 2.5rem; font-size: .85rem; }
+  .waitlist input { min-width: 0; flex: 1; border: 1px solid #60728c; border-radius: .6rem; background: #090d14; color: var(--text); padding: .72rem .8rem; font: inherit; }
+  .waitlist button, .button { border: 0; border-radius: .6rem; background: var(--lime); color: #101907; padding: .72rem .95rem; font: inherit; font-weight: 780; cursor: pointer; text-decoration: none; } .waitlist button:hover, .button:hover { background: #dcffa9; }
+  footer { display: flex; gap: 1rem; align-items: center; justify-content: space-between; border-top: 1px solid #ffffff14; color: var(--muted); margin-top: 5rem; padding-block: 1.5rem 2.5rem; font-size: .85rem; }
   @media (max-width: 44rem) { header { align-items: flex-start; flex-direction: column; justify-content: center; gap: .8rem; padding-block: .9rem; } nav { justify-content: flex-start; } .waitlist { grid-template-columns: 1fr; } footer { align-items: flex-start; flex-direction: column; } }
   @media (max-width: 36rem) { .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .waitlist-row { flex-direction: column; } }
 </style>
