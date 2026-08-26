@@ -18,9 +18,10 @@ async function optionalReport(name, fallback) {
   }
 }
 
-const [gsc, radar] = await Promise.all([
+const [gsc, radar, keywordIntelligence] = await Promise.all([
   optionalReport('gsc-latest.json', { source: 'unavailable', rows: [] }),
   optionalReport('topic-radar-latest.json', { source: 'unavailable', candidates: [] }),
+  optionalReport('keyword-intelligence-latest.json', { candidates: [], inputs: { demandSource: 'unavailable' } }),
 ]);
 
 function gscRowsFor(watch) {
@@ -40,9 +41,17 @@ const packets = radarPolicy.watchlist.map((watch) => {
   const impressions = gscRows.reduce((sum, row) => sum + Number(row.impressions || 0), 0);
   const clicks = gscRows.reduce((sum, row) => sum + Number(row.clicks || 0), 0);
   const communityScore = communitySignals.reduce((sum, candidate) => sum + Number(candidate.score || 0), 0);
-  const score = Math.min(impressions, 50) / 10 + Math.min(clicks, 20) / 5 + Math.min(communityScore, 15) + technicalSources.length;
-  const recommendation = gsc.source !== 'google-search-console' || !(gsc.rows || []).length
-    ? 'HOLD_FOR_SEARCH_DATA'
+  const watchTerms = new Set([...(watch.terms || []), ...(watch.requiredAll || []), ...(watch.requiredAny || [])]);
+  const keywordCandidates = (keywordIntelligence.candidates || []).filter((candidate) => {
+    const phraseTerms = queryTokens(candidate.phrase || '');
+    return [...watchTerms].filter((term) => phraseTerms.has(term)).length >= (watch.minimumMatches || 2);
+  });
+  const measuredKeywordCandidates = keywordCandidates.filter((candidate) => candidate.decision === 'RESEARCH_BRIEF_REVIEW_REQUIRED');
+  const demandScore = measuredKeywordCandidates.reduce((sum, candidate) => sum + Number(candidate.score || 0), 0);
+  const score = Math.min(impressions, 50) / 10 + Math.min(clicks, 20) / 5 + Math.min(communityScore, 15) + Math.min(demandScore, 20) + technicalSources.length;
+  const hasDemandEvidence = (gsc.source === 'google-search-console' && impressions > 0) || measuredKeywordCandidates.length > 0;
+  const recommendation = !hasDemandEvidence
+    ? 'HOLD_FOR_DEMAND_DATA'
     : score >= policy.minimumScoreForResearch && technicalSources.length > 0
       ? 'RESEARCH_BRIEF_REVIEW_REQUIRED'
       : 'REJECT_OR_MONITOR';
@@ -53,18 +62,19 @@ const packets = radarPolicy.watchlist.map((watch) => {
     recommendation,
     rationale: recommendation === 'RESEARCH_BRIEF_REVIEW_REQUIRED'
       ? 'Demand signals and at least one primary technical source exist; a human may decide whether to research it.'
-      : recommendation === 'HOLD_FOR_SEARCH_DATA'
-        ? 'No live finalized Search Console data is available yet; do not turn this into a content topic.'
+      : recommendation === 'HOLD_FOR_DEMAND_DATA'
+        ? 'No permitted keyword-demand or live Search Console evidence is available yet; do not turn this into a content topic.'
         : 'The available evidence is too weak or too narrow to justify a new brief.',
     gsc: { source: gsc.source, impressions, clicks, rows: gscRows },
     community: { source: radar.source, signals: communitySignals },
+    keywordIntelligence: { source: keywordIntelligence.inputs?.demandSource || 'unavailable', candidates: keywordCandidates, measuredCandidates: measuredKeywordCandidates },
     technicalSources,
   };
 }).sort((left, right) => right.score - left.score).slice(0, policy.maximumPackets);
 
 const report = {
   generatedAt: new Date().toISOString(),
-  inputs: { gscSource: gsc.source, radarSource: radar.source },
+  inputs: { gscSource: gsc.source, radarSource: radar.source, keywordDemandSource: keywordIntelligence.inputs?.demandSource || 'unavailable' },
   packets,
   guardrails: policy.guardrails,
 };

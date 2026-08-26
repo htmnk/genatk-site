@@ -1,0 +1,41 @@
+{
+  "purpose": "Generate and rank non-branded keyword hypotheses from permitted demand sources. This is a research tool, never a publishing tool or a ranking guarantee.",
+  "cadence": "weekly",
+  "maximumCandidates": 80,
+  "minimumScoreForResearch": 6,
+  "targetLocale": "en-US",
+  "seedClusters": [
+    {
+      "id": "reproducible-procedural-generation",
+      "audienceJob": "make procedural variation reviewable and repeatable",
+      "seeds": ["deterministic procedural generation", "seeded procedural generation", "reproducible procedural generation"],
+      "modifiers": ["game development", "workflow", "tutorial", "examples", "asset pipeline"]
+    },
+    {
+      "id": "procedural-game-assets",
+      "audienceJob": "create, assess, and integrate generated game assets",
+      "seeds": ["procedural game assets", "procedural 3d assets", "generated game assets"],
+      "modifiers": ["pipeline", "validation", "export", "optimization", "examples"]
+    },
+    {
+      "id": "offline-asset-workflows",
+      "audienceJob": "keep asset-generation workflows local and controllable",
+      "seeds": ["offline procedural generation", "local procedural generation", "offline asset generation"],
+      "modifiers": ["game development", "tools", "workflow", "typescript", "rust"]
+    },
+    {
+      "id": "seeded-worldbuilding",
+      "audienceJob": "turn stable parameters into useful worldbuilding variation",
+      "seeds": ["seeded world generation", "procedural environment generation", "procedural architecture generation"],
+      "modifiers": ["game development", "examples", "tutorial", "algorithm", "three.js"]
+    }
+  ],
+  "excludedTerms": ["genatk", "forge", "meshy", "free download", "crack", "prompt", "ai image"],
+  "guardrails": [
+    "Do not scrape Google, Reddit, gated tools, or search-result pages.",
+    "Do not represent a generated phrase as a keyword with demand until a permitted source supplies evidence.",
+    "Do not use private Forge code, assets, paths, benchmarks, or product details as a seed source.",
+    "Do not create, draft, modify, or publish public content from this job.",
+    "Only human review can turn an opportunity into a research brief."
+  ]
+}

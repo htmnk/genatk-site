@@ -29,6 +29,7 @@ jobs:
       - run: npm audit --audit-level=high
       - run: npm run seo:gsc-sync
       - run: npm run seo:topic-radar
+      - run: npm run seo:keyword-intelligence
       - run: npm run seo:research-director
       - if: ${{ env.OPENAI_API_KEY != '' }}
         run: npm run seo:research-synthesis -- --live

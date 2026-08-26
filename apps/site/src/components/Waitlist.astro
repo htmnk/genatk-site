@@ -3,13 +3,13 @@ const username = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME?.trim();
 const source = Astro.props.source ?? 'site';
 const formAction = username ? `https://buttondown.com/api/emails/embed-subscribe/${encodeURIComponent(username)}` : undefined;
 ---
-{formAction && <section class="waitlist" aria-labelledby="waitlist-title">
+{formAction && <section id="early-access" class="waitlist" aria-labelledby="waitlist-title">
   <div>
     <p class="eyebrow">Early access</p>
     <h2 id="waitlist-title">Follow the build, not the hype.</h2>
     <p>Occasional notes on experiments, public labs, and the eventual toolkit. No launch-date promise and no spam.</p>
   </div>
-  <form action={formAction} method="post">
+  <form action={formAction} method="post" data-genatk-conversion="waitlist_submit">
     <label for={`waitlist-email-${source}`}>Email address</label>
     <div class="waitlist-row">
       <input id={`waitlist-email-${source}`} name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
@@ -20,3 +20,11 @@ const formAction = username ? `https://buttondown.com/api/emails/embed-subscribe
     <p class="fine-print">By subscribing, you agree to receive GenATK updates. You can unsubscribe at any time. See <a href="/privacy/">privacy</a>.</p>
   </form>
 </section>}
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-genatk-conversion]').forEach((form) => {
+    form.addEventListener('submit', () => {
+      window.dispatchEvent(new CustomEvent('genatk:conversion', { detail: { event: form.dataset.genatkConversion } }));
+    });
+  });
+</script>

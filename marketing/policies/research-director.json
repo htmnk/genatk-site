@@ -3,9 +3,10 @@
   "maximumPackets": 5,
   "minimumScoreForResearch": 5,
   "purpose": "Rank evidence packets for human research decisions. Never write, draft, promote, publish, or modify the content ledger.",
-  "decisionLabels": ["RESEARCH_BRIEF_REVIEW_REQUIRED", "HOLD_FOR_SEARCH_DATA", "REJECT_OR_MONITOR"],
+  "decisionLabels": ["RESEARCH_BRIEF_REVIEW_REQUIRED", "HOLD_FOR_DEMAND_DATA", "REJECT_OR_MONITOR"],
   "guardrails": [
     "A high score is a prioritization aid, not a keyword-volume estimate or ranking prediction.",
+    "Search Console data measures GenATK visibility; Bing or Keyword Planner evidence is required to assess pre-existing market demand.",
     "Every recommendation must retain its GSC rows, community signals, and technical-source links.",
     "The job may not access Forge or any product source directory.",
     "The job may not call a model, write a draft, or mutate public content.",

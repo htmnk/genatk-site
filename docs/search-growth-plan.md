@@ -58,6 +58,25 @@ not claim unreleased features, pricing, dates, or implementation details.
 Do not publish pages merely to cover keyword variants. Each page must answer a
 different decision or task and link to the related pillar and supporting pages.
 
+## Keyword intelligence loop
+
+Brand ranking validates entity discovery; it does not validate demand. The
+research director therefore uses a separate, non-branded opportunity loop:
+
+1. Generate constrained hypotheses from `marketing/policies/keyword-intelligence.json`.
+2. Enrich them only with permitted sources: GenATK Search Console, Bing
+   Webmaster Tools exports, or Google Keyword Planner exports.
+3. Score relevance, observed demand, first-party impressions, and technical
+   source coverage. A generated phrase with no demand evidence remains
+   `HOLD_FOR_DEMAND_DATA`.
+4. Present a private weekly ranked shortlist. A human may choose one item for
+   a research brief; the job cannot draft, publish, modify pages, or access
+   Forge.
+
+This protects the project from two common failure modes: treating a keyword
+tool's volume as a ranking prediction, and writing attractive pages around
+phrases that nobody actually uses.
+
 ## Mandatory content sequence
 
 No publishable article starts with a draft. Every topic must move through this
@@ -141,6 +160,10 @@ materials as content input. Human approval remains the publishing gate.
 | Monthly | Brand SERP | Official site is the dominant result for `GenATK` |
 | Monthly | Topical authority | Non-brand impressions for target questions grow |
 | Quarterly | Acquisition quality | Relevant referring domains, returning readers, and email/demo conversions grow |
+
+The main monthly comparison is **branded versus non-branded** visibility.
+Branded queries show whether the entity is recognized; non-branded impressions,
+clicks, and qualified conversions show whether the work reaches new people.
 
 ## What not to do
 

@@ -89,3 +89,16 @@ PR check then validates the generated public page before it can be merged.
 Cloudflare Pages, domain DNS, Search Console verification, and any deployment
 token are intentionally deferred until the local content process has produced
 reviewed articles.
+# Keyword intelligence (free-first)
+
+The weekly research director now ranks public-safe hypotheses from three permitted sources: Google Search Console (already connected), Bing Webmaster Tools exports, and Google Keyword Planner exports. It does not scrape search results or pretend that generated phrases have demand.
+
+1. Keep the existing GSC OAuth credentials as configured.
+2. Add and verify `genatk.com` in Bing Webmaster Tools when convenient. Export keyword research data, normalize it as JSON (`{ "rows": [{ "keyword": "…", "monthlySearches": 0, "competition": "unknown" }] }`), then run:
+   ```sh
+   npm run seo:keyword-import -- --source bing-webmaster-tools --file /absolute/path/to/bing-keywords.json
+   npm run seo:keyword-intelligence
+   ```
+3. Later, Google Keyword Planner can use the same normalized format with `--source google-keyword-planner`. This is intentionally import-first: it costs nothing and avoids adding Ads credentials until the volume is worth it.
+
+All imported demand reports are gitignored, private to the local research workflow, and cannot publish content. The weekly report holds every topic until a permitted source supplies demand evidence.

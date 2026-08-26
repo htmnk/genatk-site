@@ -14,6 +14,10 @@
   "iterateIf": "There is qualified query-impression growth but fewer than two positive signals.",
   "pauseIf": "The test has reached day 90 and six published pages without query-intent fit, indexed coverage, or qualified conversion evidence.",
   "qualifiedConversionEvents": ["waitlist_submit", "demo_request", "studio_launch"],
+  "segmentation": {
+    "branded": "Queries containing GenATK, its domain, or a close spelling variant.",
+    "nonBranded": "All other relevant queries; this is the acquisition measure, not brand-index coverage.",
+    "eventContract": "The waitlist emits a browser event named genatk:conversion with detail.event=waitlist_submit. Any future analytics adapter must record that exact name without collecting email values."
+  },
   "note": "Thresholds are decision aids, not ranking claims. Change them only in a reviewed commit before reading the decision report."
 }
-

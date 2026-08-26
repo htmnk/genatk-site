@@ -1,0 +1,9 @@
+{
+  "source": "fixture",
+  "capturedAt": "2026-08-26T00:00:00.000Z",
+  "rows": [
+    { "keyword": "seeded procedural generation", "monthlySearches": 0, "competition": "unknown", "sourceUrl": "fixture://no-demand-data" },
+    { "keyword": "procedural game assets", "monthlySearches": 0, "competition": "unknown", "sourceUrl": "fixture://no-demand-data" }
+  ],
+  "note": "Deliberately zero-valued fixture. It proves pipeline behavior without pretending to know demand."
+}
