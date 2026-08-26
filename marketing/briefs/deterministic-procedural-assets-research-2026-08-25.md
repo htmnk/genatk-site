@@ -1,6 +1,6 @@
 # Research brief: deterministic procedural assets in game pipelines
 
-**Status:** Research complete; do not draft yet.  
+**Status:** Evidence captured; draft awaits human editorial and technical review. Not published.
 **Audience:** Solo game developers and technical artists who need to review a
 specific generated variation again later.  
 **Reader outcome:** Leave with a compact record format for a reproducible asset
@@ -46,28 +46,30 @@ tool-agnostic **asset review record**:
   compatibility, runtime cost, cross-version stability, or commercial
   readiness.
 
-## Original evidence plan
+## Original evidence record
 
-Create a product-safe public research artifact before drafting:
+The following product-safe artifacts now exist:
 
-1. A sanitized twelve-variation image gallery from an already-recorded study.
-2. A tool-agnostic seed-review worksheet that readers can copy.
-3. A methodology card spelling out capture scope, what was checked, and what
-   was not checked.
-4. A manual reviewer test: choose one gallery item, complete the worksheet,
-   and verify that the documented inputs point to the same reviewed item in the
-   intended demonstration context.
+1. A sanitized twelve-variation gallery from the recorded cottage study.
+2. A tool-agnostic seed-review worksheet at
+   `/research/asset-review-record/`.
+3. A methodology and limitations note in
+   `marketing/research/cottage-seed-study-2026-08-25.md`.
+4. The Wayfinder public lab, including a deliberately independent TypeScript
+   review-state example. It demonstrates stable review identity only; it does
+   not demonstrate product output, exporting, performance, or compatibility.
 
 The artifact must use only public-safe outputs. It must not include product
 source, technical architecture, unreleased feature behaviour, roadmap,
 performance claims, or private file paths.
 
-## Draft gate
+## Remaining review gate
 
-Do not write the article until the four evidence-plan items exist and a human
-has approved the public boundaries. If the artifact cannot be independently
-understood without revealing product internals, reject this topic or reduce it
-to a clearly illustrative worksheet rather than implying a live demo.
+The article draft exists, but must not be promoted or published until a human
+confirms the gallery, worksheet, method wording, and public TypeScript example
+are accurate and reveal no product information. If the artifact cannot be
+independently understood without revealing product internals, reduce it to the
+illustrative worksheet rather than implying a live demo.
 
 ## Measurement after publishing
 

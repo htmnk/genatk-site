@@ -9,7 +9,7 @@
     "decision": "create",
     "uniqueEvidence": ["cottage-seed-study-2026-08-25"],
     "disclosureRisk": "safe",
-    "status": "research-complete-evidence-pending"
+    "status": "draft-awaiting-human-review"
   },
   {
     "slug": "game-ready-generated-3d-checklist",

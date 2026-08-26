@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Waitlist from '../../components/Waitlist.astro';
+import publicReviewStateSource from '../../lib/public-review-state.ts?raw';
 ---
 <Base title="Wayfinder Lab | GenATK" description="Create and inspect an original, seeded 3D Wayfinder object in a public GenATK lab.">
   <section class="lab-hero">
@@ -35,6 +36,15 @@ import Waitlist from '../../components/Waitlist.astro';
     <h2>What this lab is for</h2>
     <p>It gives a review conversation a stable starting point. A team can call out a particular form, preserve the seed and generator revision it used, then decide whether the actual exported asset meets its own requirements.</p>
     <div class="three-up"><div><span>01</span><h3>Choose</h3><p>Pick a form, palette, and seed—then see a concrete variation.</p></div><div><span>02</span><h3>Identify</h3><p>The structural identifier is stable for a form and seed, independent of its palette.</p></div><div><span>03</span><h3>Review</h3><p>Carry the selected inputs into a project’s own review and export checks.</p></div></div>
+    <section class="code-study">
+      <p class="article-kicker">PUBLIC TYPESCRIPT SPECIMEN</p>
+      <h2>A review key is not a generator.</h2>
+      <p>This intentionally small TypeScript example records the inputs around a generated candidate. It does not create geometry, call a model, or represent GenATK product code. Its point is to make a review reference stable when settings arrive in a different order.</p>
+      <details>
+        <summary>Inspect the standalone example <span aria-hidden="true">+</span></summary>
+        <pre><code class="language-ts">{publicReviewStateSource}</code></pre>
+      </details>
+    </section>
     <h2>It is intentionally not a product demo</h2>
     <p>The geometry, materials, seeded generator, and IDs here were written solely for this page. They do not measure rendering quality, asset compatibility, file size, runtime performance, or unreleased GenATK capabilities.</p>
     <p>For the tool-agnostic next step, use the <a href="/research/asset-review-record/">asset review record</a>. For the underlying idea, read <a href="/learn/reproducible-procedural-assets/">why reproducible procedural assets are easier to review</a>.</p>
@@ -128,5 +138,6 @@ import Waitlist from '../../components/Waitlist.astro';
   .scene-shell { min-height: 38rem; border-color: #3e4b60; border-radius: 1.25rem; background: radial-gradient(circle at 50% 35%, #304754, #111923 57%, #080b11); box-shadow: inset 0 0 8rem #010205aa, 0 2rem 5rem #0007; } .scene-shell::before { background-image: linear-gradient(#c8f5e20c 1px, transparent 1px), linear-gradient(90deg, #c8f5e20c 1px, transparent 1px); background-size: 2.5rem 2.5rem; } .scene-status { border-color: #506179; background: #0b111bd9; color: #d8e7e9; } .scene-overlay { color: #d8e7e988; }
   .lab-panel { width: min(100% - 2.3rem, 74rem); margin-top: -2.4rem; position: relative; z-index: 3; border-color: #3e4b60; border-radius: .9rem; background: #101722eF; backdrop-filter: blur(14px); } .control-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) auto auto; } .control-grid label { color: #b8c7ce; } .control-grid select, .control-grid input { border-color: #46566a; background: #0b1018; color: #edf5f3; } .control-grid button { border-radius: .42rem; background: var(--lime); color: #10170c; } .control-grid button.secondary, .copy-state { border: 1px solid #526278; background: transparent; color: #d6e3e5; } .identities { grid-template-columns: repeat(3, 1fr) auto auto; border-color: #2f3d50; } .identities span { color: #96a9b1; } .identities strong { color: #e8f1ee; } .control-note { color: #aab9bd; }
   article { width: min(100%, 78rem); padding-top: 5rem; } article > h2 { margin-top: .45rem; font-size: clamp(2.25rem, 4vw, 3.8rem); letter-spacing: -.055em; } article > p { color: var(--muted); } .article-kicker { color: var(--lime); font-size: .7rem; font-weight: 800; letter-spacing: .13em; } .three-up { gap: 1px; border: 1px solid var(--line); background: var(--line); } .three-up div { border: 0; border-radius: 0; background: var(--panel); } .three-up span { color: var(--lime); } .three-up p { color: var(--muted); }
+  .code-study { max-width: 48rem; margin: 0 0 4rem; } .code-study h2 { margin-top: .45rem; font-size: clamp(2.1rem, 3.5vw, 3.15rem); } .code-study > p { color: var(--muted); } .code-study details { border: 1px solid var(--line-bright); background: #0a1018; } .code-study summary { display: flex; justify-content: space-between; gap: 1rem; cursor: pointer; list-style: none; padding: .9rem 1rem; color: var(--text); font-size: .87rem; font-weight: 750; } .code-study summary::-webkit-details-marker { display: none; } .code-study summary span { color: var(--lime); } .code-study details[open] summary { border-bottom: 1px solid var(--line); } .code-study pre { max-height: 30rem; margin: 0; border: 0; border-radius: 0; background: #070b11; color: #c8d4e5; font-size: .72rem; line-height: 1.55; }
   @media (max-width: 56rem) { .lab-hero { grid-template-columns: 1fr; } .scene-shell { min-height: min(37rem, 105vw); } .lab-panel { margin-top: 0; } .control-grid { grid-template-columns: repeat(3, 1fr); } .identities { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 38rem) { .scene-shell { min-height: 26rem; } .control-grid, .identities { grid-template-columns: 1fr; } .lab-intro h1 { font-size: 3.5rem; } }
 </style>
