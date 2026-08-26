@@ -58,6 +58,19 @@ Create a GA4 property only once a real domain exists. Record `waitlist_submit`,
 `demo_request`, and `studio_launch` with a stable source/page attribute. Use a
 read-only reporting credential for the sync job.
 
+## Email waitlist
+
+The site contains a dormant Buttondown-ready form. It renders only when the
+public build-time variable `PUBLIC_BUTTONDOWN_USERNAME` is set. The form posts
+directly to Buttondown's standard embed endpoint; no email addresses pass
+through a GenATK database, Worker, or repository secret.
+
+To activate it, create the newsletter in Buttondown, set the variable in the
+Cloudflare Pages build environment, and redeploy. Configure Buttondown's
+sender-domain DNS records in Cloudflare if sending from `genatk.com`. The
+privacy notice already describes this conditional integration. The username is
+public; do not add Buttondown API keys to the site or repository.
+
 ## Draft model
 
 `tools/seo/draft.mjs` defaults to a local fixture. Set `OPENAI_API_KEY` only as

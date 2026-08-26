@@ -1,90 +1,104 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Waitlist from '../../components/Waitlist.astro';
 ---
-<Base title="Seeded asset identities | GenATK Lab" description="An independent TypeScript demonstration of seeded procedural variation and reviewable asset identities.">
+<Base title="Wayfinder Lab | GenATK" description="Create and inspect an original, seeded 3D Wayfinder object in a public GenATK lab.">
+  <section class="lab-hero">
+    <div class="lab-intro">
+      <p class="eyebrow">GenATK Lab · Public prototype</p>
+      <h1>Turn one number into a landmark.</h1>
+      <p class="lede">The Wayfinder is an original 3D study of seeded variation: a hand-built architectural signal that changes predictably with its input. It is an educational prototype, not a product preview.</p>
+      <div class="lab-notes"><span>Drag to orbit</span><span>Scroll to zoom</span><span>Same seed, same silhouette</span></div>
+    </div>
+    <div class="scene-shell">
+      <div id="wayfinder-scene" class="scene" aria-label="Interactive three-dimensional Wayfinder study"></div>
+      <div class="scene-status" id="scene-status" aria-live="polite">Preparing scene…</div>
+      <div class="scene-overlay" aria-hidden="true"><span>WAYFINDER / 01</span><span>GENATK LAB</span></div>
+    </div>
+  </section>
+
+  <section class="lab-panel" aria-label="Wayfinder controls">
+    <div class="control-grid">
+      <label>Form<select id="archetype"><option value="shrine">Shrine</option><option value="beacon">Beacon</option><option value="gate">Gate</option></select></label>
+      <label>Seed<input id="seed" type="number" min="0" max="4294967295" value="4287" inputmode="numeric" /></label>
+      <label>Light<select id="palette"><option value="verdant">Verdant</option><option value="solar">Solar</option><option value="ember">Ember</option></select></label>
+      <button id="randomise" type="button">New variation <span aria-hidden="true">↗</span></button>
+      <button class="secondary" id="reset-view" type="button">Reset view</button>
+    </div>
+    <div class="identities"><div><span>Geometry identity</span><code id="geometry-id">—</code></div><div><span>Appearance preset</span><code id="appearance-id">—</code></div><div><span>Review state</span><strong>Illustrative only</strong></div></div>
+  </section>
+
   <article>
-    <p class="eyebrow">GenATK Lab · illustrative</p>
-    <h1>A seed is useful when a team can name what it made.</h1>
-    <p class="lede">This small TypeScript lab produces simple 2D archetypes. It is deliberately independent from GenATK product code: its purpose is to make repeatability tangible, not to preview an unreleased tool.</p>
-
-    <section class="lab" aria-label="Seeded asset demonstration">
-      <div class="controls">
-        <label>Archetype <select id="archetype"><option value="arch">Arch</option><option value="beacon">Beacon</option><option value="pavilion">Pavilion</option></select></label>
-        <label>Seed <input id="seed" type="number" min="0" max="4294967295" value="42" inputmode="numeric" /></label>
-        <label>Appearance <select id="tone"><option value="moss">Moss</option><option value="sand">Sand</option><option value="ember">Ember</option></select></label>
-        <button id="randomise" type="button">Choose a seed</button>
-      </div>
-      <div class="stage-wrap"><div id="stage" class="stage" aria-live="polite"></div></div>
-      <dl class="identities">
-        <div><dt>Geometry identity</dt><dd><code id="geometry-id"></code></dd></div>
-        <div><dt>Appearance preset</dt><dd><code id="appearance-id"></code></dd></div>
-      </dl>
-      <p class="source-note">Try changing only Appearance: the geometry identity stays stable. Change the seed or archetype: it changes. These identifiers describe this lab’s simple shapes only; they do not identify a file, export, or production asset.</p>
-    </section>
-
-    <h2>What this demonstrates</h2>
-    <ul>
-      <li>The same archetype and seed reconstruct the same illustrated geometry.</li>
-      <li>An appearance choice can remain separate from the structural identity.</li>
-      <li>A review note can point at a concrete input set instead of an unspecified random output.</li>
-    </ul>
-
-    <h2>Minimal TypeScript use</h2>
-    <pre><code>const asset = createLabAsset(&#123;
-  archetype: 'arch',
-  seed: 42,
-  tone: 'moss',
-&#125;);
-
-console.log(asset.geometryId); // stable for these same inputs</code></pre>
-    <p>See the accompanying <a href="/research/asset-review-record/">asset review record</a> for the extra information a team should retain before treating a generated result as approved.</p>
-
-    <h2>What this does not demonstrate</h2>
-    <p>It does not measure rendering quality, file compatibility, geometry budgets, runtime performance, or any GenATK capability. It is a compact teaching model, not an implementation claim.</p>
+    <h2>What this lab is for</h2>
+    <p>It gives a review conversation a stable starting point. A team can call out a particular form, preserve the seed and generator revision it used, then decide whether the actual exported asset meets its own requirements.</p>
+    <div class="three-up"><div><span>01</span><h3>Choose</h3><p>Pick a form, palette, and seed—then see a concrete variation.</p></div><div><span>02</span><h3>Identify</h3><p>The structural identifier is stable for a form and seed, independent of its palette.</p></div><div><span>03</span><h3>Review</h3><p>Carry the selected inputs into a project’s own review and export checks.</p></div></div>
+    <h2>It is intentionally not a product demo</h2>
+    <p>The geometry, materials, seeded generator, and IDs here were written solely for this page. They do not measure rendering quality, asset compatibility, file size, runtime performance, or unreleased GenATK capabilities.</p>
+    <p>For the tool-agnostic next step, use the <a href="/research/asset-review-record/">asset review record</a>. For the underlying idea, read <a href="/learn/reproducible-procedural-assets/">why reproducible procedural assets are easier to review</a>.</p>
+    <Waitlist source="wayfinder-lab" />
   </article>
 </Base>
 
 <script>
-  import { createLabAsset } from '../../lib/seeded-lab';
+  import type { BufferGeometry, EulerTuple, Material, Vector3Tuple } from 'three';
+  import { createWayfinderSpec, type WayfinderArchetype, type WayfinderPalette } from '../../lib/wayfinder-spec';
 
+  const host = document.querySelector<HTMLDivElement>('#wayfinder-scene')!;
+  const status = document.querySelector<HTMLElement>('#scene-status')!;
   const archetype = document.querySelector<HTMLSelectElement>('#archetype')!;
   const seed = document.querySelector<HTMLInputElement>('#seed')!;
-  const tone = document.querySelector<HTMLSelectElement>('#tone')!;
-  const stage = document.querySelector<HTMLDivElement>('#stage')!;
+  const palette = document.querySelector<HTMLSelectElement>('#palette')!;
   const geometryId = document.querySelector<HTMLElement>('#geometry-id')!;
   const appearanceId = document.querySelector<HTMLElement>('#appearance-id')!;
-
-  function render() {
-    const asset = createLabAsset({
-      archetype: archetype.value as 'arch' | 'beacon' | 'pavilion',
-      seed: Number(seed.value),
-      tone: tone.value as 'moss' | 'sand' | 'ember',
-    });
-    stage.innerHTML = asset.svg;
-    geometryId.textContent = asset.geometryId;
-    appearanceId.textContent = asset.appearanceId;
+  const paletteMap: Record<WayfinderPalette, { stone: number; accent: number; core: number; ground: number }> = {
+    verdant: { stone: 0x526b52, accent: 0xd6f79e, core: 0xb6ff7f, ground: 0x102015 }, solar: { stone: 0x80694e, accent: 0xffdc98, core: 0xffbb5b, ground: 0x211a10 }, ember: { stone: 0x77564f, accent: 0xffb090, core: 0xff765f, ground: 0x231312 },
+  };
+  void (async () => {
+  const THREE = await import('three');
+  const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+  const { default: WebGL } = await import('three/addons/capabilities/WebGL.js');
+  if (!WebGL.isWebGL2Available()) {
+    status.textContent = 'This browser does not support WebGL 2. The Wayfinder needs a modern graphics context.'; status.classList.add('fallback');
+  } else {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100); camera.position.set(6.5, 4.4, 7.2);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1; host.append(renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.enablePan = false; controls.minDistance = 5.2; controls.maxDistance = 12; controls.maxPolarAngle = Math.PI * .47; controls.target.set(0, 1.2, 0);
+    scene.add(new THREE.HemisphereLight(0xd6f79e, 0x101410, 1.25));
+    const key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(5, 7, 4); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); scene.add(key);
+    const rim = new THREE.PointLight(0xd6f79e, 8, 11, 2); rim.position.set(-3, 3.5, -3); scene.add(rim);
+    const floor = new THREE.Mesh(new THREE.CircleGeometry(8, 72), new THREE.MeshStandardMaterial({ color: 0x121812, roughness: 1 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+    const root = new THREE.Group(); scene.add(root); let orbitGroup = new THREE.Group(); root.add(orbitGroup);
+    const material = (color: number, roughness = .68, metalness = .08) => new THREE.MeshStandardMaterial({ color, roughness, metalness });
+    function clearRoot() { root.clear(); orbitGroup = new THREE.Group(); root.add(orbitGroup); }
+    function addMesh(geometry: BufferGeometry, meshMaterial: Material, position: Vector3Tuple, rotation: EulerTuple = [0, 0, 0]) { const mesh = new THREE.Mesh(geometry, meshMaterial); mesh.position.set(...position); mesh.rotation.set(...rotation); mesh.castShadow = true; mesh.receiveShadow = true; root.add(mesh); return mesh; }
+    function build() {
+      const input = { archetype: archetype.value as WayfinderArchetype, seed: Number(seed.value), palette: palette.value as WayfinderPalette };
+      const spec = createWayfinderSpec(input); const colors = paletteMap[input.palette]; clearRoot(); floor.material = material(colors.ground, 1, 0); rim.color.setHex(colors.accent);
+      const stone = material(colors.stone); const darkStone = material(new THREE.Color(colors.stone).multiplyScalar(.48).getHex(), .82, .03); const accent = material(colors.accent, .34, .32); const core = new THREE.MeshStandardMaterial({ color: colors.core, emissive: colors.core, emissiveIntensity: 2.1, roughness: .28, metalness: .15 });
+      addMesh(new THREE.CylinderGeometry(spec.baseRadius, spec.baseRadius * 1.18, .34, 8), darkStone, [0, .17, 0], [0, Math.PI / 8, 0]); addMesh(new THREE.CylinderGeometry(spec.baseRadius * .8, spec.baseRadius, .28, 8), stone, [0, .46, 0]); addMesh(new THREE.TorusGeometry(spec.baseRadius * .54, .07, 8, 48), accent, [0, .63, 0], [Math.PI / 2, 0, 0]);
+      const pillarRadius = spec.orbitRadius * .58;
+      for (let index = 0; index < spec.pillarCount; index += 1) { const angle = (index / spec.pillarCount) * Math.PI * 2 + .24; const pillarHeight = spec.height * (input.archetype === 'beacon' ? .78 : .57) * (.9 + (index % 2) * .1); const x = Math.cos(angle) * pillarRadius; const z = Math.sin(angle) * pillarRadius; addMesh(new THREE.CylinderGeometry(.2, .29, pillarHeight, 6), stone, [x, .62 + pillarHeight / 2, z], [0, angle, 0]); addMesh(new THREE.OctahedronGeometry(.28, 0), accent, [x, .62 + pillarHeight + .15, z], [.2, angle, 0]); }
+      const coreY = input.archetype === 'beacon' ? spec.height * .7 + .65 : spec.height * .52 + .72; addMesh(new THREE.IcosahedronGeometry(.42 * spec.crownScale, 2), core, [0, coreY, 0], [.2, .4, .1]); addMesh(new THREE.CylinderGeometry(.42 * spec.crownScale, .7 * spec.crownScale, Math.max(.7, spec.height * .44), 5), stone, [0, coreY - .55, 0], [0, Math.PI / 5, 0]);
+      if (input.archetype === 'beacon') addMesh(new THREE.ConeGeometry(.74 * spec.crownScale, spec.height * .5, 5), darkStone, [0, coreY + .75, 0], [0, Math.PI / 5, 0]); else if (input.archetype === 'gate') addMesh(new THREE.TorusGeometry(.74 * spec.crownScale, .15, 8, 24, Math.PI), accent, [0, coreY + .14, 0], [0, 0, Math.PI]); else addMesh(new THREE.DodecahedronGeometry(.7 * spec.crownScale, 0), darkStone, [0, coreY + .82, 0], [.4, .3, 0]);
+      for (let index = 0; index < spec.shardCount; index += 1) { const angle = (index / spec.shardCount) * Math.PI * 2; const shard = new THREE.Mesh(new THREE.TetrahedronGeometry(.14 + (index % 3) * .045, 0), accent); shard.position.set(Math.cos(angle) * spec.orbitRadius, coreY + Math.sin(index * 1.7) * .36, Math.sin(angle) * spec.orbitRadius); shard.rotation.set(angle, angle * 1.6, .5); shard.castShadow = true; orbitGroup.add(shard); }
+      geometryId.textContent = spec.geometryId; appearanceId.textContent = spec.appearanceId; status.textContent = `${input.archetype} variation ready`;
+    }
+    function resize() { const { width, height } = host.getBoundingClientRect(); if (!width || !height) return; camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height, false); }
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function render(time: number) { const elapsed = time * .001; if (!reduceMotion) { root.rotation.y = elapsed * .12; orbitGroup.rotation.y = -elapsed * .43; } controls.update(); renderer.render(scene, camera); requestAnimationFrame(render); }
+    document.querySelector('#randomise')?.addEventListener('click', () => { seed.value = String(Math.floor(Math.random() * 4_294_967_295)); build(); });
+    document.querySelector('#reset-view')?.addEventListener('click', () => { camera.position.set(6.5, 4.4, 7.2); controls.target.set(0, 1.2, 0); controls.update(); });
+    [archetype, seed, palette].forEach((element) => element.addEventListener('input', build)); new ResizeObserver(resize).observe(host); build(); resize(); requestAnimationFrame(render);
   }
-
-  document.querySelector('#randomise')?.addEventListener('click', () => {
-    seed.value = String(Math.floor(Math.random() * 4_294_967_295));
-    render();
-  });
-  [archetype, seed, tone].forEach((element) => element.addEventListener('input', render));
-  render();
+  })();
 </script>
 
 <style>
-  .lab { border: 1px solid #4d563f; background: #1a1d17; border-radius: .8rem; padding: 1rem; margin: 2rem 0; }
-  .controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; align-items: end; }
-  label { display: grid; gap: .3rem; color: #c9cbc3; font-size: .9rem; }
-  select, input, button { border: 1px solid #667256; border-radius: .35rem; background: #121310; color: #edeee7; font: inherit; padding: .55rem; }
-  button { cursor: pointer; background: #c7df9d; color: #18200f; font-weight: 700; }
-  .stage-wrap { margin-top: 1rem; border-radius: .6rem; overflow: hidden; border: 1px solid #34372e; }
-  .stage :global(svg) { display: block; width: 100%; min-height: 14rem; }
-  .identities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
-  .identities div { margin-top: 1rem; }
-  dt { color: #aeb39f; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
-  dd { margin: .2rem 0 0; }
-  @media (max-width: 45rem) { .controls { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 30rem) { .controls, .identities { grid-template-columns: 1fr; } }
+  .lab-hero { width: min(100%, 76rem); margin: auto; padding: clamp(2.2rem, 6vw, 5.5rem) clamp(1.15rem, 4vw, 2.5rem) 2rem; display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr); gap: clamp(2rem, 7vw, 6rem); align-items: center; } .lab-intro h1 { margin-bottom: 1.3rem; } .lab-notes { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.7rem; } .lab-notes span { border: 1px solid #3d493b; border-radius: 999px; color: #b9c5b4; padding: .35rem .65rem; font-size: .78rem; }
+  .scene-shell { position: relative; min-height: 34rem; overflow: hidden; border: 1px solid #3d493b; border-radius: 1.5rem; background: radial-gradient(circle at 50% 35%, #2d4b2a, #101610 58%, #090b09); box-shadow: 0 2rem 5rem #0008; } .scene { position: absolute; inset: 0; } .scene :global(canvas) { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; } .scene :global(canvas):active { cursor: grabbing; } .scene-status { position: absolute; left: 1rem; bottom: 1rem; border: 1px solid #53634d; border-radius: 999px; background: #111811cc; color: #dbe6d5; padding: .35rem .65rem; font-size: .76rem; } .scene-status.fallback { max-width: 20rem; border-radius: .7rem; } .scene-overlay { position: absolute; inset: 1rem; display: flex; justify-content: space-between; align-items: flex-start; color: #dbe6d566; font-size: .68rem; font-weight: 700; letter-spacing: .12em; pointer-events: none; }
+  .lab-panel { width: min(100% - 2.3rem, 71rem); margin: 0 auto; padding: 1.1rem; border: 1px solid #3d493b; border-radius: 1rem; background: #111611; } .control-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto auto; gap: .7rem; align-items: end; } label { display: grid; gap: .3rem; color: #b8c1b3; font-size: .8rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; } select, input, button { width: 100%; border: 1px solid #51604c; border-radius: .55rem; background: #0b0e0b; color: #eef4e9; padding: .7rem; font: inherit; } button { width: auto; border: 0; background: #d6f79e; color: #152010; font-weight: 750; cursor: pointer; white-space: nowrap; } button.secondary { border: 1px solid #667362; background: transparent; color: #d8e2d2; } .identities { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; border-top: 1px solid #2d382c; margin-top: 1rem; padding-top: 1rem; } .identities div { display: grid; gap: .2rem; } .identities span { color: #9eaa99; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; } .identities strong { color: #e5ebe0; font-size: .9rem; }
+  article { width: min(100%, 76rem); margin: auto; padding-inline: clamp(1.15rem, 4vw, 2.5rem); } article > :not(.three-up, .waitlist) { max-width: 48rem; } .three-up { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0 4rem; } .three-up div { padding: 1.15rem; border: 1px solid #2e382d; border-radius: 1rem; background: #141914; } .three-up span { color: #d6f79e; font-size: .8rem; font-weight: 750; } .three-up h3 { margin: .55rem 0; } .three-up p { margin: 0; color: #b9c2b5; }
+  @media (max-width: 56rem) { .lab-hero { grid-template-columns: 1fr; } .scene-shell { min-height: min(32rem, 90vw); } .control-grid { grid-template-columns: repeat(3, 1fr); } .control-grid button { width: 100%; } } @media (max-width: 38rem) { .lab-hero { padding-top: 2.5rem; } .scene-shell { min-height: 24rem; } .control-grid, .identities, .three-up { grid-template-columns: 1fr; } }
 </style>
