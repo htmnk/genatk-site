@@ -13,6 +13,9 @@ const canonicalUrl = Astro.site ? new URL(canonical, Astro.site) : undefined;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#15201a" />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <title>{title}</title>
   </head>

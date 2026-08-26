@@ -1,0 +1,10 @@
+{
+  "name": "GenATK — Generative Asset Toolkit",
+  "short_name": "GenATK",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "theme_color": "#15201a",
+  "background_color": "#15201a",
+  "display": "standalone"
+}
