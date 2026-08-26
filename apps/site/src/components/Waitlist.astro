@@ -1,14 +1,17 @@
 ---
 const username = import.meta.env.PUBLIC_BUTTONDOWN_USERNAME?.trim();
 const source = Astro.props.source ?? 'site';
+const variant = Astro.props.variant ?? 'default';
 const formAction = username ? `https://buttondown.com/api/emails/embed-subscribe/${encodeURIComponent(username)}` : undefined;
 ---
-{formAction && <section id="early-access" class="waitlist" aria-labelledby="waitlist-title">
+{formAction && <section id="early-access" class:list={['waitlist', variant === 'compact' && 'waitlist-compact']} aria-labelledby="waitlist-title">
+  {variant !== 'compact' && <>
   <div>
     <p class="eyebrow">Early access</p>
     <h2 id="waitlist-title">Follow the build, not the hype.</h2>
     <p>Occasional notes on experiments, public labs, and the eventual toolkit. No launch-date promise and no spam.</p>
   </div>
+  </>}
   <form action={formAction} method="post" data-genatk-conversion="waitlist_submit">
     <label for={`waitlist-email-${source}`}>Email address</label>
     <div class="waitlist-row">
