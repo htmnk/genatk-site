@@ -35,6 +35,6 @@
   },
   "devDependencies": {
     "lighthouse": "^13.4.1",
-    "puppeteer": "^25.8.0"
+    "puppeteer": "^25.9.0"
   }
 }
